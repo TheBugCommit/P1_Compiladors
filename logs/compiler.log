@@ -1,0 +1,21 @@
+--- START OF ANALYSIS ---
+[PRODUCTION] Type: int
+[PRODUCTION] Declared identifier: 'a'
+[PRODUCTION] Complete simple declaration
+[PRODUCTION] Type: float
+[PRODUCTION] Declared identifier: 'b'
+[PRODUCTION] Complete simple declaration
+[PRODUCTION] Type: bool
+[PRODUCTION] Declared identifier: 'd'
+[PRODUCTION] Complete simple declaration
+[PRODUCTION] Type: string
+[PRODUCTION] Declared identifier: 's'
+[PRODUCTION] Complete simple declaration
+[PRODUCTION] Recovered from error declarations
+[PRODUCTION] Type: string
+[PRODUCTION] Declared identifier: 's'
+[PRODUCTION] Additional identifier declared: 'a'
+[PRODUCTION] Type: bool
+[PRODUCTION] Declared identifier: 'j'
+[PRODUCTION] Complete simple declaration
+--- END OF ANALYSIS ---
