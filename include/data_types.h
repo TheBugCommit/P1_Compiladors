@@ -9,25 +9,22 @@ typedef enum {
     TYPE_VOID
 } DATA_TYPE;
 
+typedef union {
+    int int_val;
+    double float_val;
+    char *string_val;
+    char bool_val;
+} VALUE_UNION;
+
 typedef struct {
     DATA_TYPE type;
-    union {
-        int int_val;
-        double float_val;
-        char *string_val;
-        char bool_val;
-    } value;
+    VALUE_UNION value;
 } ExprResult;
 
 typedef struct {
     DATA_TYPE type;
     char is_initialized;
-    union {
-        int int_val;
-        double float_val;
-        char *string_val;
-        int bool_val;
-    } value;
+    VALUE_UNION value;
 } sym_value_type;
 
 
