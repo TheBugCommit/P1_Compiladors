@@ -12,8 +12,15 @@ extern YYSTYPE yylval;
 
 int yycolumn = 0;
 #define YY_USER_ACTION { \
-    yycolumn += yyleng; \
-    if (yytext[0] == '\n') { yycolumn = 0; } \
+    \
+    int i; \
+    for (i = 0; i < yyleng; ++i) { \
+        if (yytext[i] == '\n') { \
+            yycolumn = 0; \
+        } else { \
+            yycolumn++; \
+        } \
+    } \
 }
 
 %}
@@ -23,11 +30,41 @@ int yycolumn = 0;
 %option noinput
 %option noyywrap
 
+/* Multiline comment state */
+%x MULTI_COMMENT
+
+
 ID      [a-zA-Z_][a-zA-Z0-9_]*
 WHITESPACE [ \t]
 RETURN [\n]
+COMMENT (\/\/|#)
 
 %%
+
+"/*" {
+    BEGIN(MULTI_COMMENT);
+    SourceLocation loc = current_location();
+    log_production("Multiline comment start on row: %d col: %d", loc.line, loc.column);
+}
+
+<MULTI_COMMENT>[^*]+        { log_production("Multicomment skipping characters"); }
+
+
+<MULTI_COMMENT>\*+\/ {
+    BEGIN(INITIAL);
+    SourceLocation loc = current_location();
+    log_production("Multiline comment closed on row: %d col: %d", loc.line, loc.column);
+}
+
+<MULTI_COMMENT>.|\n         { }
+
+<MULTI_COMMENT><<EOF>> {
+    SourceLocation loc = current_location();
+    REPORT_LEXICAL_ERROR(loc, "Unclosed multi-line comment");
+    BEGIN(INITIAL);
+}
+
+{COMMENT}.* { log_production("Skiped comment line"); }
 
 "int"       { yylval.data_type = TYPE_INT; return TK_INT; }
 "float"     { yylval.data_type = TYPE_FLOAT; return TK_FLOAT; }
@@ -49,7 +86,7 @@ RETURN [\n]
 
 . { 
     SourceLocation loc = current_location();
-    REPORT_LEXICAL_ERROR(loc, "Carácter inválido: '%s'", yytext);
+    REPORT_LEXICAL_ERROR(loc, "Invalid character: '%s'", yytext);
 }
 
 %%

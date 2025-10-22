@@ -131,7 +131,7 @@ run_one: $(BUILD_DIR)/$(TARGET)
 		echo "ERROR: You must specify the input file. Usage: make run_one FILE=tests/archivo$(TEST_EXT)"; \
 	else \
 		echo "--- Executing $(TARGET) with file: $(FILE) ---"; \
-		$(BUILD_DIR)/$(TARGET) < $(FILE); \
+		$(BUILD_DIR)/$(TARGET) $(FILE) $(LOGS_FILE); \
 	fi
 
 # ==============================================================================
