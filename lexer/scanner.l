@@ -40,18 +40,6 @@ char* unescape_string(char* s) {
 /* Multiline comment state */
 %x MULTI_COMMENT
 
-/*
-ID         [a-zA-Z_][a-zA-Z0-9_]*
-WHITESPACE [ \t]
-RETURN     [\n]
-COMMENT    (\/\/|#)
-DIGIT      [0-9]
-EXPONENT   [eE][+-]?{DIGIT}+
-FLOAT      (({DIGIT}+\.{DIGIT}+({EXPONENT})?) | (\.{DIGIT}+({EXPONENT})?) | ({DIGIT}+{EXPONENT}))
-INT{DIGIT}+    
-STRING     \"([^"\n\\]|\\.)*\"   
-UNCLOSED_STRING   \"[^\n\"]*(\n|<<EOF>>)*/
-
 ID              [a-zA-Z_][a-zA-Z0-9_]*
 WHITESPACE      [ \t]
 RETURN          [\n]
