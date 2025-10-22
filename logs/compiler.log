@@ -1,22 +1,17 @@
 --- START OF ANALYSIS ---
-[PRODUCTION] Type: int
-[PRODUCTION] Declared identifier: 'a'
-[PRODUCTION] Declared identifier: 'a'
-[PRODUCTION] Declared identifier: 'a'
-[PRODUCTION] Complete simple declaration (Type: int)
-[PRODUCTION] Type: float
-[PRODUCTION] Declared identifier: 'b'
-[PRODUCTION] Complete simple declaration (Type: float)
-[PRODUCTION] Type: bool
-[PRODUCTION] Declared identifier: 'd'
-[PRODUCTION] Complete simple declaration (Type: bool)
-[PRODUCTION] Type: string
-[PRODUCTION] Declared identifier: 's'
-[PRODUCTION] Complete simple declaration (Type: string)
-[PRODUCTION] Recovered from error declarations
-[PRODUCTION] Type: string
-[PRODUCTION] Type: bool
-[PRODUCTION] Declared identifier: 'j'
-[PRODUCTION] Complete simple declaration (Type: bool)
-[PRODUCTION] Type: int
+[PRODUCTION] Skiped comment line
+[PRODUCTION] Skiped comment line
+[PRODUCTION] Skiped comment line
+[PRODUCTION] Multiline comment start on row: 4 col: 2
+[PRODUCTION] Multicomment skipping characters
+[PRODUCTION] Multicomment skipping characters
+[PRODUCTION] Multicomment skipping characters
+[PRODUCTION] Multicomment skipping characters
+[PRODUCTION] Multicomment skipping characters
+[PRODUCTION] Multiline comment closed on row: 12 col: 11
+[PRODUCTION] Multiline comment start on row: 14 col: 2
+[PRODUCTION] Multicomment skipping characters
+[PRODUCTION] Multiline comment closed on row: 14 col: 20
+[PRODUCTION] Multiline comment start on row: 17 col: 2
+[PRODUCTION] Multicomment skipping characters
 --- END OF ANALYSIS ---

@@ -6,7 +6,7 @@
 #include "../src/symtab/symtab.h"
 #include "../src/utils/error.h"
 #include "../src/data/string_list.h"
-#include "../src/parser/declarations/declaration.h"
+#include "../src/semantic/declaration.h"
 
 extern int yylex();
 
@@ -21,15 +21,36 @@ extern int yylex();
     char *text;
     DATA_TYPE data_type;
     StringListNode *id_list;
+
+    int int_val;
+    double float_val;
+    char bool_val;
+
+    ExprResult expr_val;
 }
 
+/* Type Tokens */
 %token <data_type> TK_INT TK_FLOAT TK_STRING TK_BOOL
+
+/* IDs Tokens */
 %token <text> TK_ID
-%token TK_EQ TK_COMMA TK_SEMICOLON
-%token TK_TRUE TK_FALSE
+
+%token <int_val> TK_INT_LIT 
+%token <float_val> TK_FLOAT_LIT 
+%token <text> TK_STRING_LIT
+%token <bool_val> TK_TRUE TK_FALSE
+
+/* Puntuation and Operation Tokens  */
+%token TK_ASSIGN TK_COMMA TK_SEMICOLON
+%token TK_PLUS TK_MINUS TK_MULT TK_DIV TK_MOD TK_POW
+%token TK_GT TK_GE TK_LT TK_LE TK_EQ TK_NE
+%token TK_NOT TK_AND TK_OR
+%token TK_LPAREN TK_RPAREN
 
 %type <data_type> primitive_type
 %type <id_list> id_list
+/*%type <expr_val> expression bool_term bool_factor relational_expr arith_expr arith_term arith_factor primary literal*/
+%type <expr_val> expression literal
 
 %define parse.error detailed
 

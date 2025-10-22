@@ -13,12 +13,6 @@
 /* The type of the value field of symbol table entries                      */
 #include "data_types.h"
 
-// La estructura de la entrada de la tabla de símbolos
-typedef struct {
-    DATA_TYPE type;         // El tipo de dato de la variable (int, float, etc.)
-    VALUE_UNION value;      // El valor actual de la variable
-    // Puedes añadir otros campos si los necesitas (ej: es_constante, es_funcion, etc.)
-} sym_value_type;    
                                         /* with a declaration appropriate   */
                                         /* for your application.            */
 					/*Ho subtituim per un unio o struct */

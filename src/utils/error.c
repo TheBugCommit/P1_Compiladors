@@ -43,7 +43,7 @@ void report_error(ErrorLevel level, CompilerResult code,
     
     fprintf(stderr, "[%s] %s:%d:%d: %s: %s\n",
             module,
-            loc.filename ? loc.filename : "<unknown>",
+            loc.filename ? loc.filename : "<void>",
             loc.line,
             loc.column,
             level_str,

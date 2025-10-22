@@ -13,15 +13,15 @@ bool type_check_assignment(DATA_TYPE variable_type, DATA_TYPE expression_type, S
 }
 
 bool type_check_expression(DATA_TYPE type, SourceLocation loc) {
-    if (type == TYPE_UNKNOWN) {
-        REPORT_SEMANTIC_ERROR(loc, "Unknown type in expression");
+    if (type == TYPE_VOID) {
+        REPORT_SEMANTIC_ERROR(loc, "Void type in expression");
         return false;
     }
     return true;
 }
 
 void type_check_variable_declaration(const char* name, DATA_TYPE type, SourceLocation loc) {
-    if (type == TYPE_UNKNOWN) {
-        REPORT_SEMANTIC_ERROR(loc, "Unknown type for variable '%s'", name);
+    if (type == TYPE_VOID) {
+        REPORT_SEMANTIC_ERROR(loc, "Void type for variable '%s'", name);
     }
 }

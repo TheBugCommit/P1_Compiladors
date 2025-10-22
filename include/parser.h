@@ -66,11 +66,31 @@ extern int yydebug;
     TK_STRING = 260,               /* TK_STRING  */
     TK_BOOL = 261,                 /* TK_BOOL  */
     TK_ID = 262,                   /* TK_ID  */
-    TK_EQ = 263,                   /* TK_EQ  */
-    TK_COMMA = 264,                /* TK_COMMA  */
-    TK_SEMICOLON = 265,            /* TK_SEMICOLON  */
+    TK_INT_LIT = 263,              /* TK_INT_LIT  */
+    TK_FLOAT_LIT = 264,            /* TK_FLOAT_LIT  */
+    TK_STRING_LIT = 265,           /* TK_STRING_LIT  */
     TK_TRUE = 266,                 /* TK_TRUE  */
-    TK_FALSE = 267                 /* TK_FALSE  */
+    TK_FALSE = 267,                /* TK_FALSE  */
+    TK_ASSIGN = 268,               /* TK_ASSIGN  */
+    TK_COMMA = 269,                /* TK_COMMA  */
+    TK_SEMICOLON = 270,            /* TK_SEMICOLON  */
+    TK_PLUS = 271,                 /* TK_PLUS  */
+    TK_MINUS = 272,                /* TK_MINUS  */
+    TK_MULT = 273,                 /* TK_MULT  */
+    TK_DIV = 274,                  /* TK_DIV  */
+    TK_MOD = 275,                  /* TK_MOD  */
+    TK_POW = 276,                  /* TK_POW  */
+    TK_GT = 277,                   /* TK_GT  */
+    TK_GE = 278,                   /* TK_GE  */
+    TK_LT = 279,                   /* TK_LT  */
+    TK_LE = 280,                   /* TK_LE  */
+    TK_EQ = 281,                   /* TK_EQ  */
+    TK_NE = 282,                   /* TK_NE  */
+    TK_NOT = 283,                  /* TK_NOT  */
+    TK_AND = 284,                  /* TK_AND  */
+    TK_OR = 285,                   /* TK_OR  */
+    TK_LPAREN = 286,               /* TK_LPAREN  */
+    TK_RPAREN = 287                /* TK_RPAREN  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -85,7 +105,13 @@ union YYSTYPE
     DATA_TYPE data_type;
     StringListNode *id_list;
 
-#line 89 "build/parser.tab.h"
+    int int_val;
+    double float_val;
+    char bool_val;
+
+    ExprResult expr_val;
+
+#line 115 "build/parser.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

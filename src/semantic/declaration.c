@@ -1,7 +1,7 @@
 #include "declaration.h"
-#include "../../utils/log.h"
-#include "../../utils/error.h"
-#include "../../symtab/symtab.h"
+#include "../utils/log.h"
+#include "../utils/error.h"
+#include "../symtab/symtab.h"
 #include <stdlib.h>
 
 void handle_simple_declaration(DATA_TYPE declared_type, StringListNode *list)
@@ -12,6 +12,7 @@ void handle_simple_declaration(DATA_TYPE declared_type, StringListNode *list)
     {
         sym_value_type new_entry;
         new_entry.type = declared_type;
+        new_entry.is_initialized = 0;
 
         int result = sym_add(current->id, &new_entry);
         if (result == SYMTAB_DUPLICATE)
@@ -20,12 +21,10 @@ void handle_simple_declaration(DATA_TYPE declared_type, StringListNode *list)
             REPORT_SEMANTIC_ERROR(loc, "Identifier '%s' already declared", current->id);
         }
 
-        log_production("Declared identifier: '%s'", current->id);
+        log_production("Declared identifier: '%s' (Type: %d)", current->id, declared_type);
 
         current = current->next;
     }
-
-    log_production("Complete simple declaration (Type: %s)", DATA_TYPE_STRINGS[declared_type]);
 
     string_list_free(current);
 }

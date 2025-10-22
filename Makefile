@@ -31,6 +31,7 @@ INCLUDE_DIRS = -Iinclude
 
 # Compiler flags (warnings, optimization, etc.)
 CFLAGS = -Wall -g $(INCLUDE_DIRS)
+LDFLAGS = -lm
 
 # ==============================================================================
 # TEST VARIABLES
@@ -61,7 +62,7 @@ $(BUILD_DIR):
 # Rule to build the final executable
 $(BUILD_DIR)/$(TARGET): $(OBJ_C) $(GEN_OBJ)
 	# Linking all object files (manual and generated)
-	gcc $(CFLAGS) $^ -o $@
+	gcc $(CFLAGS) $^ -o $@ $(LDFLAGS)
 
 # Rule to compile generated C files (Flex/Bison)
 $(BUILD_DIR)/%.o: %.c

@@ -6,23 +6,29 @@ typedef enum {
     TYPE_FLOAT,
     TYPE_STRING,
     TYPE_BOOL,
-    TYPE_UNKNOWN
+    TYPE_VOID
 } DATA_TYPE;
 
-const char *DATA_TYPE_STRINGS[] = {
-    "int",
-    "float",
-    "string",
-    "bool",
-    "unknown"
-};
+typedef struct {
+    DATA_TYPE type;
+    union {
+        int int_val;
+        double float_val;
+        char *string_val;
+        char bool_val;
+    } value;
+} ExprResult;
 
+typedef struct {
+    DATA_TYPE type;
+    char is_initialized;
+    union {
+        int int_val;
+        double float_val;
+        char *string_val;
+        int bool_val;
+    } value;
+} sym_value_type;
 
-typedef union {
-    int int_val;
-    float float_val;
-    char *string_val;
-    int bool_val;
-} VALUE_UNION;
 
 #endif
