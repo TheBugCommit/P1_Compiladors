@@ -3,8 +3,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include "parser.h"
-#include "../src/utils/log.h"
 #include "data_types.h"
+#include "../src/utils/log.h"
 #include "../src/utils/error.h"
 
 extern int yylineno;
@@ -34,30 +34,27 @@ int yycolumn = 0;
 %x MULTI_COMMENT
 
 
-ID      [a-zA-Z_][a-zA-Z0-9_]*
+ID         [a-zA-Z_][a-zA-Z0-9_]*
 WHITESPACE [ \t]
-RETURN [\n]
-COMMENT (\/\/|#)
+RETURN     [\n]
+COMMENT    (\/\/|#)
+DIGIT      [0-9]
+EXPONENT   [eE][+-]?{DIGIT}+
 
 %%
 
-"/*" {
+"/*" { 
     BEGIN(MULTI_COMMENT);
     SourceLocation loc = current_location();
     log_production("Multiline comment start on row: %d col: %d", loc.line, loc.column);
 }
-
-<MULTI_COMMENT>[^*]+        { log_production("Multicomment skipping characters"); }
-
-
+<MULTI_COMMENT>[^*]+ { log_production("Multicomment skipping characters"); }
 <MULTI_COMMENT>\*+\/ {
     BEGIN(INITIAL);
     SourceLocation loc = current_location();
     log_production("Multiline comment closed on row: %d col: %d", loc.line, loc.column);
 }
-
-<MULTI_COMMENT>.|\n         { }
-
+<MULTI_COMMENT>.|\n  { }
 <MULTI_COMMENT><<EOF>> {
     SourceLocation loc = current_location();
     REPORT_LEXICAL_ERROR(loc, "Unclosed multi-line comment");
@@ -66,10 +63,18 @@ COMMENT (\/\/|#)
 
 {COMMENT}.* { log_production("Skiped comment line"); }
 
+%{ /* Types */ %}
+
 "int"       { yylval.data_type = TYPE_INT; return TK_INT; }
 "float"     { yylval.data_type = TYPE_FLOAT; return TK_FLOAT; }
 "string"    { yylval.data_type = TYPE_STRING; return TK_STRING; }
 "bool"      { yylval.data_type = TYPE_BOOL; return TK_BOOL; }
+
+%{ /* Literals */ %}
+
+"true"      { return TK_TRUE; }
+"false"     { return TK_FALSE; }
+
 
 {ID} { 
     yylval.text = strdup(yytext); 

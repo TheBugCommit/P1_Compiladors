@@ -45,11 +45,12 @@
 extern int yydebug;
 #endif
 /* "%code requires" blocks.  */
-#line 13 "parser/parser.y"
+#line 15 "parser/parser.y"
 
   #include "data_types.h"
+  #include "../src/data/string_list.h"
 
-#line 53 "build/parser.tab.h"
+#line 54 "build/parser.tab.h"
 
 /* Token kinds.  */
 #ifndef YYTOKENTYPE
@@ -67,7 +68,9 @@ extern int yydebug;
     TK_ID = 262,                   /* TK_ID  */
     TK_EQ = 263,                   /* TK_EQ  */
     TK_COMMA = 264,                /* TK_COMMA  */
-    TK_SEMICOLON = 265             /* TK_SEMICOLON  */
+    TK_SEMICOLON = 265,            /* TK_SEMICOLON  */
+    TK_TRUE = 266,                 /* TK_TRUE  */
+    TK_FALSE = 267                 /* TK_FALSE  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -76,12 +79,13 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 17 "parser/parser.y"
+#line 20 "parser/parser.y"
 
     char *text;
     DATA_TYPE data_type;
+    StringListNode *id_list;
 
-#line 85 "build/parser.tab.h"
+#line 89 "build/parser.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

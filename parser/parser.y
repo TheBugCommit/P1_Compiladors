@@ -1,10 +1,12 @@
 %{
 #include <stdio.h>
 #include <string.h>
-#include "../src/utils/log.h"
-#include "../src/semantic/symtab.h"
 #include "data_types.h"
+#include "../src/utils/log.h"
+#include "../src/symtab/symtab.h"
 #include "../src/utils/error.h"
+#include "../src/data/string_list.h"
+#include "../src/parser/declarations/declaration.h"
 
 extern int yylex();
 
@@ -12,18 +14,22 @@ extern int yylex();
 
 %code requires {
   #include "data_types.h"
+  #include "../src/data/string_list.h"
 }
 
 %union {
     char *text;
     DATA_TYPE data_type;
+    StringListNode *id_list;
 }
 
 %token <data_type> TK_INT TK_FLOAT TK_STRING TK_BOOL
 %token <text> TK_ID
 %token TK_EQ TK_COMMA TK_SEMICOLON
+%token TK_TRUE TK_FALSE
 
-%type <data_type> primitive_type id_list
+%type <data_type> primitive_type
+%type <id_list> id_list
 
 %define parse.error detailed
 
@@ -45,16 +51,13 @@ declarations:
       }
 ;
 
-
 simple_declaration: 
-    primitive_type id_list TK_SEMICOLON
-    {
-        log_production("Complete simple declaration");
-    }
+    primitive_type id_list TK_SEMICOLON { handle_simple_declaration($1, $2); }
     | primitive_type id_list error
     {
         SourceLocation loc = current_location();
         REPORT_SYNTAX_ERROR(loc, "Missing ';' at the end of the statement");
+        string_list_free($2);
         yyerrok;
     }
     | primitive_type error TK_SEMICOLON
@@ -63,7 +66,6 @@ simple_declaration:
         yyerrok;
     }
 ;
-
 primitive_type:
     TK_INT      { $$ = TYPE_INT; log_production("Type: int"); }
     | TK_FLOAT  { $$ = TYPE_FLOAT; log_production("Type: float"); }
@@ -72,38 +74,8 @@ primitive_type:
 ;
 
 id_list:
-    TK_ID
-    {
-        DATA_TYPE declared_type = $$;
-        
-        sym_value_type new_entry;
-        new_entry.type = declared_type;
-        
-        int result = sym_add($1, &new_entry);
-        if (result == SYMTAB_DUPLICATE) {
-            SourceLocation loc = current_location();
-            REPORT_SEMANTIC_ERROR(loc, "Identifier '%s' already declared", $1);
-        }
-
-        log_production("Declared identifier: '%s'", $1);
-        $$ = declared_type;
-    }
-    | id_list TK_COMMA TK_ID
-    {
-        DATA_TYPE declared_type = $1;
-        
-        sym_value_type new_entry;
-        new_entry.type = declared_type;
-        
-        int result = sym_add($3, &new_entry);
-        if (result == SYMTAB_DUPLICATE) {
-            SourceLocation loc = current_location();
-            REPORT_SEMANTIC_ERROR(loc, "Identifier '%s' already declared", $3);
-        }
-        
-        log_production("Additional identifier declared: '%s'", $3);
-        $$ = declared_type;
-    }
+    TK_ID { $$ = string_list_append(NULL, $1); }
+    | id_list TK_COMMA TK_ID { $$ = string_list_append($1, $3); }
 ;
 
 sentences:

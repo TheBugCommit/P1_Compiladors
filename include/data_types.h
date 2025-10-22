@@ -9,6 +9,15 @@ typedef enum {
     TYPE_UNKNOWN
 } DATA_TYPE;
 
+const char *DATA_TYPE_STRINGS[] = {
+    "int",
+    "float",
+    "string",
+    "bool",
+    "unknown"
+};
+
+
 typedef union {
     int int_val;
     float float_val;

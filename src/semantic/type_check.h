@@ -2,8 +2,8 @@
 #define TYPE_CHECK_H
 
 #include "common.h"
-#include "symtab.h"
 #include "data_types.h"
+#include "../symtab/symtab.h"
 
 bool type_check_assignment(DATA_TYPE variable_type, DATA_TYPE expression_type, SourceLocation loc);
 bool type_check_expression(DATA_TYPE type, SourceLocation loc);
