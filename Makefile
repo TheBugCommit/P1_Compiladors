@@ -10,8 +10,8 @@ BUILD_DIR = build
 
 # Source directories
 SRC_DIR = src
-LEXER_DIR = lexer
-PARSER_DIR = parser
+LEXER_DIR = src/lexer
+PARSER_DIR = src/parser
 
 # Automatically find all .c files in src and its subdirectories
 SRC_C = $(shell find $(SRC_DIR) -name '*.c')
