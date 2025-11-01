@@ -18,8 +18,6 @@ typedef struct {
     const char* filename;
 } SourceLocation;
 
-#define SOURCE_LOCATION_INIT {0, 0, NULL}
-
 SourceLocation current_location(void);
 
 #endif

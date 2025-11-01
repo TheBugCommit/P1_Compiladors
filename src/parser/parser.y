@@ -2,10 +2,11 @@
 #include <stdio.h>
 #include <string.h>
 #include "data_types.h"
+#include "globals.h"
 #include "../src/utils/log.h"
 #include "../src/symtab/symtab.h"
 #include "../src/utils/error.h"
-#include "../src/data/string_list.h"
+#include "../src/semantic/string_list.h"
 #include "../src/semantic/handler.h"
 #include "../src/semantic/expression.h"
 
@@ -16,7 +17,7 @@ extern int yylineno;
 
 %code requires {
   #include "data_types.h"
-  #include "../src/data/string_list.h"
+  #include "../src/semantic/string_list.h"
 }
 
 %union {
@@ -51,7 +52,6 @@ extern int yylineno;
 
 %type <data_type> primitive_type
 %type <id_list> id_list
-/*%type <expr_val> expression bool_term bool_factor relational_expr arith_expr arith_term arith_factor primary literal*/
 %type <expr_val> expression arith_term arith_expr arith_factor bool_term bool_factor relational_expr primary literal
 
 %define parse.error detailed
@@ -129,7 +129,7 @@ assignment_sentence:
 expression_sentence:
     expression 
     {
-        log_production("Expression evaluated %d", $1.type);
+        log_production("Expression evaluated %s", TYPE_NAME[$1.type]);
         free_expr_string(&$1);
     }
 ;
@@ -248,31 +248,31 @@ literal:
     {
         $$.type = TYPE_INT;
         $$.value.int_val = $1;
-        log_production("Literal: Integer (%d)", $1);
+        log_production("Literal: %s (%d)", TYPE_NAME[$$.type], $1);
     }
     | TK_FLOAT_LIT
     {
         $$.type = TYPE_FLOAT;
         $$.value.float_val = $1;
-        log_production("Literal: Float (%f)", $1);
+        log_production("Literal: %s (%f)", TYPE_NAME[$$.type], $1);
     }
     | TK_STRING_LIT
     {
         $$.type = TYPE_STRING;
         $$.value.string_val = $1;
-        log_production("Literal: String (%s)", $1);
+        log_production("Literal: %s (%s)", TYPE_NAME[$$.type], $1);
     }
     | TK_TRUE
     {
         $$.type = TYPE_BOOL;
         $$.value.bool_val = $1;
-        log_production("Literal: Boolean (true)");
+        log_production("Literal: %s (true)", TYPE_NAME[$$.type]);
     }
     | TK_FALSE
     {
         $$.type = TYPE_BOOL;
         $$.value.bool_val = $1;
-        log_production("Literal: Boolean (false)");
+        log_production("Literal: %s (false)", TYPE_NAME[$$.type]);
     }
 ;
 %%

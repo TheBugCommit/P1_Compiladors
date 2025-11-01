@@ -2,7 +2,7 @@
 #define HANDLER_H
 
 #include "data_types.h"
-#include "../data/string_list.h"
+#include "./string_list.h"
 
 void handle_simple_declaration(DATA_TYPE declared_type, StringListNode *list);
 void handle_assigment_sentence(char * token_id, ExprResult expression);

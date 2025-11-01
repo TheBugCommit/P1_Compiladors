@@ -1,4 +1,5 @@
 #include "handler.h"
+#include "globals.h"
 #include "./expression.h"
 #include "../utils/log.h"
 #include "../utils/error.h"
@@ -23,7 +24,7 @@ void handle_simple_declaration(DATA_TYPE declared_type, StringListNode *list)
             REPORT_SEMANTIC_ERROR(loc, "Identifier '%s' already declared", current->id);
         }
 
-        log_production("Declared identifier: '%s' (Type: %d)", current->id, declared_type);
+        log_production("Declared identifier: '%s' (Type: %s)", current->id, TYPE_NAME[declared_type]);
 
         current = current->next;
     }
@@ -52,8 +53,8 @@ void handle_assigment_sentence(char *token_id, ExprResult expression)
     else if (entry->type != expression.type)
     {
         SourceLocation loc = current_location();
-        REPORT_SEMANTIC_ERROR(loc, "Type mismatch in assignment to '%s'. Expected %d, got %d",
-                              token_id, entry->type, expression.type);
+        REPORT_SEMANTIC_ERROR(loc, "Type mismatch in assignment to '%s'. Expected %s, got %s",
+                              token_id, TYPE_NAME[entry->type], TYPE_NAME[expression.type]);
         free_expr_string(&expression);
         free(token_id);
         return;
@@ -69,19 +70,19 @@ void handle_assigment_sentence(char *token_id, ExprResult expression)
     {
     case TYPE_STRING:
         entry->value.string_val = strdup(expression.value.string_val);
-        log_production("Assignment: '%s' = %s [Type: %d]", token_id, entry->value.string_val, entry->type);
+        log_production("Assignment: '%s' = %s [Type: %s]", token_id, entry->value.string_val, TYPE_NAME[entry->type]);
         break;
     case TYPE_BOOL:
         entry->value.bool_val = expression.value.bool_val;
-        log_production("Assignment: '%s' = %d [Type: %d]", token_id, entry->value.bool_val, entry->type);
+        log_production("Assignment: '%s' = %d [Type: %s]", token_id, entry->value.bool_val, TYPE_NAME[entry->type]);
         break;
     case TYPE_INT:
         entry->value.int_val = expression.value.int_val;
-        log_production("Assignment: '%s' = %d [Type: %d]", token_id, entry->value.int_val, entry->type);
+        log_production("Assignment: '%s' = %d [Type: %s]", token_id, entry->value.int_val, TYPE_NAME[entry->type]);
         break;
     case TYPE_FLOAT:
         entry->value.float_val = expression.value.float_val;
-        log_production("Assignment: '%s' = %f [Type: %d]", token_id, entry->value.float_val, entry->type);
+        log_production("Assignment: '%s' = %f [Type: %s]", token_id, entry->value.float_val, TYPE_NAME[entry->type]);
         break;
     case TYPE_VOID:
         break;

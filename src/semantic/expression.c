@@ -1,5 +1,6 @@
 #include "expression.h"
 #include "common.h"
+#include "globals.h"
 #include "parser.h"
 #include "../utils/error.h"
 #include "../utils/log.h"
@@ -17,14 +18,15 @@ void free_expr_string(ExprResult *e) {
 void check_numeric(ExprResult *e) {
     if (e->type != TYPE_INT && e->type != TYPE_FLOAT) {
         SourceLocation loc = current_location();
-        REPORT_SEMANTIC_ERROR(loc, "Type error: expected numeric type (int or float)");
+        REPORT_SEMANTIC_ERROR(loc, "Type error: expected numeric type (%s or %s)", 
+            TYPE_NAME[TYPE_INT], TYPE_NAME[TYPE_FLOAT]);
     }
 }
 
 void check_boolean(ExprResult *e) {
     if (e->type != TYPE_BOOL) {
         SourceLocation loc = current_location();
-        REPORT_SEMANTIC_ERROR(loc, "Type error: expected boolean type");
+        REPORT_SEMANTIC_ERROR(loc, "Type error: expected %s type", TYPE_NAME[TYPE_BOOL]);
     }
 }
 

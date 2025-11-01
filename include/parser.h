@@ -45,10 +45,10 @@
 extern int yydebug;
 #endif
 /* "%code requires" blocks.  */
-#line 17 "src/parser/parser.y"
+#line 18 "src/parser/parser.y"
 
   #include "data_types.h"
-  #include "../src/data/string_list.h"
+  #include "../src/semantic/string_list.h"
 
 #line 54 "build/parser.tab.h"
 
@@ -99,7 +99,7 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 22 "src/parser/parser.y"
+#line 23 "src/parser/parser.y"
 
     char *text;
     DATA_TYPE data_type;

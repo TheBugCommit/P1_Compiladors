@@ -4,7 +4,7 @@
 
 StringListNode* string_list_append(StringListNode *list, char *id) {
     StringListNode *node = malloc(sizeof(StringListNode));
-    node->id = id; //Strdup on lexer
+    node->id = id;
     node->next = list;
     return node;
 }

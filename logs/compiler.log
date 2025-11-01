@@ -1,22 +1,22 @@
 --- START OF ANALYSIS ---
 [PROD] Type: int
-[PROD] Declared identifier: 'a' (Type: 0)
+[PROD] Declared identifier: 'a' (Type: INT)
 [PROD] Type: string
-[PROD] Declared identifier: 'b' (Type: 2)
+[PROD] Declared identifier: 'b' (Type: STRING)
 [PROD] Type: float
-[PROD] Declared identifier: 'c' (Type: 1)
+[PROD] Declared identifier: 'c' (Type: FLOAT)
 [PROD] Type: bool
-[PROD] Declared identifier: 'd' (Type: 3)
+[PROD] Declared identifier: 'd' (Type: BOOLEAN)
 [PROD] Type: int
-[PROD] Declared identifier: 'i' (Type: 0)
+[PROD] Declared identifier: 'i' (Type: INT)
 [PROD] Type: float
-[PROD] Declared identifier: 'x' (Type: 1)
-[PROD] Declared identifier: 'z' (Type: 1)
-[PROD] Literal: Float (1.500000)
-[PROD] Assignment: 'x' = 1.500000 [Type: 1]
+[PROD] Declared identifier: 'x' (Type: FLOAT)
+[PROD] Declared identifier: 'z' (Type: FLOAT)
+[PROD] Literal: FLOAT (1.500000)
+[PROD] Assignment: 'x' = 1.500000 [Type: FLOAT]
 [PROD] Symbtab updated
-[PROD] Literal: Integer (5)
-[PROD] Assignment: 'i' = 5 [Type: 0]
+[PROD] Literal: INT (5)
+[PROD] Assignment: 'i' = 5 [Type: INT]
 [PROD] Symbtab updated
 [PROD] Expression: Identifier 'i'
 [PROD] Expression: Identifier 'x'
@@ -25,39 +25,39 @@
 [PROD] Expression: Parenthesized
 [PROD] Evaluating mul
 [PROD] Expression: Identifier 'i'
-[PROD] Literal: Float (4.000000)
+[PROD] Literal: FLOAT (4.000000)
 [PROD] Evaluating div
 [PROD] Evaluating sub
-[PROD] Assignment: 'z' = 31.250000 [Type: 1]
+[PROD] Assignment: 'z' = 31.250000 [Type: FLOAT]
 [PROD] Symbtab updated
-[PROD] Literal: String (Hola)
-[PROD] Assignment: 'b' = Hola [Type: 2]
+[PROD] Literal: STRING (Hola)
+[PROD] Assignment: 'b' = Hola [Type: STRING]
 [PROD] Symbtab updated
 [PROD] Expression: Identifier 'z'
-[PROD] Literal: Integer (3)
+[PROD] Literal: INT (3)
 [PROD] Evaluating relational op
 [PROD] Expression: Identifier 'i'
-[PROD] Literal: Integer (0)
+[PROD] Literal: INT (0)
 [PROD] Evaluating relational op
 [PROD] Expression: Identifier 'i'
-[PROD] Literal: Integer (10)
+[PROD] Literal: INT (10)
 [PROD] Evaluating relational op
 [PROD] Evaluating AND
 [PROD] Expression: Parenthesized
 [PROD] Evaluating NOT
 [PROD] Evaluating OR
-[PROD] Literal: Boolean (false)
+[PROD] Literal: BOOLEAN (false)
 [PROD] Evaluating OR
-[PROD] Assignment: 'd' = 1 [Type: 3]
+[PROD] Assignment: 'd' = 1 [Type: BOOLEAN]
 [PROD] Symbtab updated
 [PROD] Expression: Identifier 'x'
-[PROD] Expression evaluated 1
+[PROD] Expression evaluated FLOAT
 [PROD] Expression: Identifier 'i'
-[PROD] Expression evaluated 0
+[PROD] Expression evaluated INT
 [PROD] Expression: Identifier 'z'
-[PROD] Expression evaluated 1
+[PROD] Expression evaluated FLOAT
 [PROD] Expression: Identifier 'b'
-[PROD] Expression evaluated 2
+[PROD] Expression evaluated STRING
 [PROD] Expression: Identifier 'd'
-[PROD] Expression evaluated 3
+[PROD] Expression evaluated BOOLEAN
 --- END OF ANALYSIS ---
