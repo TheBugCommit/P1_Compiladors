@@ -6,6 +6,7 @@
 #include "../src/utils/log.h"
 #include "../src/symtab/symtab.h"
 #include "../src/utils/error.h"
+#include "../src/utils/report.h"
 #include "../src/semantic/string_list.h"
 #include "../src/semantic/handler.h"
 #include "../src/semantic/expression.h"
@@ -122,6 +123,7 @@ sentence:
 
 assignment_sentence:
     TK_ID TK_ASSIGN expression {
+        report_assignation($1, $3);
         handle_assigment_sentence($1, $3);
     }
 ;
@@ -129,7 +131,7 @@ assignment_sentence:
 expression_sentence:
     expression 
     {
-        log_production("Expression evaluated %s", TYPE_NAME[$1.type]);
+        report_expression($1);
         free_expr_string(&$1);
     }
 ;

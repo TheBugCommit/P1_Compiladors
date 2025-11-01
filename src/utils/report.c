@@ -1,0 +1,43 @@
+#include "./report.h"
+#include "globals.h"
+#include <stdio.h>
+
+void print_value(ExprResult e) {
+    printf("Value: ");
+    switch (e.type) {
+        case TYPE_INT:
+            printf("%d", e.value.int_val);
+            break;
+        case TYPE_FLOAT:
+            printf("%.2f", e.value.float_val);
+            break;
+        case TYPE_STRING:
+            if (e.value.string_val) {
+                printf("\"%s\"", e.value.string_val);
+            } else {
+                printf("(NULL)");
+            }
+            break;
+        case TYPE_BOOL:
+            printf("%s", e.value.bool_val ? "true" : "false");
+            break;
+        case TYPE_VOID:
+            break;
+    }
+}
+
+void report_expression(ExprResult e) {
+    if (e.type == TYPE_VOID) return;
+
+    printf("EXPRESSION => Type: %s, ", TYPE_NAME[e.type]);
+    print_value(e);
+    printf("\n");
+}
+
+void report_assignation(const char* token_id, ExprResult e) {
+    if (e.type == TYPE_VOID) return;
+
+    printf("ASSIGNATION => Name: %s, Type: %s, ", token_id, TYPE_NAME[e.type]);
+    print_value(e);
+    printf("\n");
+}

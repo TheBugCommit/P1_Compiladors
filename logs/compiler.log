@@ -50,14 +50,19 @@
 [PROD] Evaluating OR
 [PROD] Assignment: 'd' = 1 [Type: BOOLEAN]
 [PROD] Symbtab updated
-[PROD] Expression: Identifier 'x'
-[PROD] Expression evaluated FLOAT
 [PROD] Expression: Identifier 'i'
-[PROD] Expression evaluated INT
+[PROD] Expression: Identifier 'x'
+[PROD] Expression: Identifier 'i'
+[PROD] Evaluating add
+[PROD] Expression: Parenthesized
+[PROD] Evaluating mul
+[PROD] Expression: Identifier 'i'
+[PROD] Evaluating sub
+[PROD] Literal: STRING (hola concat)
+[PROD] Evaluating add
+[PROD] Expression: Identifier 'x'
+[PROD] Expression: Identifier 'i'
 [PROD] Expression: Identifier 'z'
-[PROD] Expression evaluated FLOAT
 [PROD] Expression: Identifier 'b'
-[PROD] Expression evaluated STRING
 [PROD] Expression: Identifier 'd'
-[PROD] Expression evaluated BOOLEAN
 --- END OF ANALYSIS ---
