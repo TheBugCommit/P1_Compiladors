@@ -89,6 +89,48 @@ void handle_assigment_sentence(char *token_id, ExprResult expression)
 
     entry->is_initialized = 1;
 
+    res = sym_enter(token_id, entry);
+    if (res == SYMTAB_DUPLICATE) {
+        log_production("Symbtab updated");
+    }
+
     free_expr_string(&expression);
     free(token_id);
+}
+
+ExprResult handle_primary_id(char *token_id)
+{
+    ExprResult expr;
+    sym_value_type *entry = malloc(sizeof(sym_value_type));
+    int res = sym_lookup(token_id, entry);
+    if (res != SYMTAB_OK)
+    {
+        SourceLocation loc = current_location();
+        REPORT_SEMANTIC_ERROR(loc, "Identifier '%s' not declared", token_id);
+        expr.type = TYPE_VOID;
+    }
+    else if (entry->is_initialized == 0)
+    {
+        SourceLocation loc = current_location();
+        REPORT_SEMANTIC_ERROR(loc, "Identifier '%s' used before initialization", token_id);
+        expr.type = TYPE_VOID;
+    }
+    else
+    {
+        expr.type = entry->type;
+        if (expr.type == TYPE_STRING)
+        {
+            expr.value.string_val = strdup(entry->value.string_val);
+        }
+        else
+        {
+            expr.value = entry->value;
+        }
+
+        log_production("Expression: Identifier '%s'", token_id);
+    }
+
+    free(token_id);
+
+    return expr;
 }

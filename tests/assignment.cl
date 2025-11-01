@@ -4,21 +4,17 @@ int a
 string b
 float c
 bool d
-a := 3
+int i
+float z, x
+
+x := 1.5
+i := 5
+z := i * (x + i) - i / 4.0
 b := "Hola"
+d := z > 3 or not (i > 0 and i <= 10) or false
 
-
-c := 3.65
-a := 2 * 65
-c := 2 * 65
-d := true
-d := false
-
-
-a := true
-c := 2.5 * 2 + 3
-
-a := 2.5 * 2 + 3
-
-
-
+x
+i
+z
+b
+d

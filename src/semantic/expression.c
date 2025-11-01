@@ -179,6 +179,18 @@ ExprResult eval_unary_minus(ExprResult a) {
     return res;
 }
 
+ExprResult eval_unary_plus(ExprResult a) {
+    log_production("Evaluating unary plus");
+    check_numeric(&a);
+    ExprResult res = a;
+    if (a.type == TYPE_FLOAT) {
+        res.value.float_val = +a.value.float_val;
+    } else {
+        res.value.int_val = +a.value.int_val;
+    }
+    return res;
+}
+
 /* Implementación de relacionales (>, <, =, etc.) */
 ExprResult eval_relational(ExprResult a, ExprResult b, int op) {
     log_production("Evaluating relational op");

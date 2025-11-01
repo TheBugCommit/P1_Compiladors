@@ -1,26 +1,63 @@
 --- START OF ANALYSIS ---
-[PROD] Multiline comment start on row: 1 col: 2
-[PROD] Multicomment skipping characters
-[PROD] Multiline comment closed on row: 2 col: 20
+[PROD] Type: int
+[PROD] Declared identifier: 'a' (Type: 0)
+[PROD] Type: string
+[PROD] Declared identifier: 'b' (Type: 2)
+[PROD] Type: float
+[PROD] Declared identifier: 'c' (Type: 1)
+[PROD] Type: bool
+[PROD] Declared identifier: 'd' (Type: 3)
+[PROD] Type: int
+[PROD] Declared identifier: 'i' (Type: 0)
 [PROD] Type: float
 [PROD] Declared identifier: 'x' (Type: 1)
-[PROD] Type: int
-[PROD] Declared identifier: 'j' (Type: 0)
-[PROD] Declared identifier: 'i' (Type: 0)
-[PROD] Type: string
-[PROD] Declared identifier: 's' (Type: 2)
-[PROD] Type: bool
-[PROD] Declared identifier: 'b' (Type: 3)
-[PROD] Skiped comment line
+[PROD] Declared identifier: 'z' (Type: 1)
 [PROD] Literal: Float (1.500000)
 [PROD] Assignment: 'x' = 1.500000 [Type: 1]
+[PROD] Symbtab updated
 [PROD] Literal: Integer (5)
 [PROD] Assignment: 'i' = 5 [Type: 0]
-[PROD] Literal: String (Hola)
-[PROD] Assignment: 's' = Hola [Type: 2]
-[PROD] Literal: Integer (5)
-[PROD] Literal: Integer (5)
+[PROD] Symbtab updated
+[PROD] Expression: Identifier 'i'
+[PROD] Expression: Identifier 'x'
+[PROD] Expression: Identifier 'i'
+[PROD] Evaluating add
+[PROD] Expression: Parenthesized
 [PROD] Evaluating mul
-[PROD] Literal: Integer (1)
-[PROD] Assignment: 'i' = 1 [Type: 0]
+[PROD] Expression: Identifier 'i'
+[PROD] Literal: Float (4.000000)
+[PROD] Evaluating div
+[PROD] Evaluating sub
+[PROD] Assignment: 'z' = 31.250000 [Type: 1]
+[PROD] Symbtab updated
+[PROD] Literal: String (Hola)
+[PROD] Assignment: 'b' = Hola [Type: 2]
+[PROD] Symbtab updated
+[PROD] Expression: Identifier 'z'
+[PROD] Literal: Integer (3)
+[PROD] Evaluating relational op
+[PROD] Expression: Identifier 'i'
+[PROD] Literal: Integer (0)
+[PROD] Evaluating relational op
+[PROD] Expression: Identifier 'i'
+[PROD] Literal: Integer (10)
+[PROD] Evaluating relational op
+[PROD] Evaluating AND
+[PROD] Expression: Parenthesized
+[PROD] Evaluating NOT
+[PROD] Evaluating OR
+[PROD] Literal: Boolean (false)
+[PROD] Evaluating OR
+[PROD] Assignment: 'd' = 1 [Type: 3]
+[PROD] Symbtab updated
+[PROD] Expression: Identifier 'x'
+[PROD] Expression evaluated 1
+[PROD] Expression: Identifier 'i'
+[PROD] Expression evaluated 0
+[PROD] Expression: Identifier 'z'
+[PROD] Expression evaluated 1
+[PROD] Expression: Identifier 'b'
+[PROD] Expression evaluated 2
+[PROD] Expression: Identifier 'd'
+[PROD] Expression evaluated 3
 --- END OF ANALYSIS ---

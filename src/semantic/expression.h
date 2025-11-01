@@ -13,6 +13,7 @@ ExprResult eval_div(ExprResult a, ExprResult b);
 ExprResult eval_mod(ExprResult a, ExprResult b);
 ExprResult eval_pow(ExprResult a, ExprResult b);
 ExprResult eval_unary_minus(ExprResult a);
+ExprResult eval_unary_plus(ExprResult a);
 ExprResult eval_relational(ExprResult a, ExprResult b, int op);
 ExprResult eval_and(ExprResult a, ExprResult b);
 ExprResult eval_or(ExprResult a, ExprResult b);
