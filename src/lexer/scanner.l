@@ -26,8 +26,8 @@ int yycolumn = 0;
 char* unescape_string(char* s) {
     int len = strlen(s);
     if (len < 2) return strdup("");
-    s[len - 1] = '\0'; // Quita la comilla final
-    return strdup(s + 1);  // Retorna un duplicado desde después de la comilla inicial
+    s[len - 1] = '\0';
+    return strdup(s + 1);
 }
 
 %}
@@ -41,7 +41,7 @@ char* unescape_string(char* s) {
 %x MULTI_COMMENT
 
 ID              [a-zA-Z_][a-zA-Z0-9_]*
-WHITESPACE      [ \t]
+WHITESPACE      [ \t\r]
 RETURN          [\n]
 COMMENT         (\/\/|#)
 DIGIT           [0-9]
@@ -129,11 +129,9 @@ UNCLOSED_STRING \"[^\n\"]*(\n|$)
 
 %{ /* Puntuation */ %}
 ","         { return TK_COMMA; }
-";"         { return TK_SEMICOLON; }
-
 
 {WHITESPACE}+      { }
-{RETURN}           { }
+{RETURN}+          { return TK_NEWLINE; }
 
 . { 
     SourceLocation loc = current_location();

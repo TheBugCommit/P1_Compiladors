@@ -1,8 +1,9 @@
-int a, a, a;
-float b;
-bool d;
-string s;
-strings s;
+int a, a, a
+float b
+
+bool d
+string s
+strings s
 string s, a
-bool j;
+bool j
 int c

@@ -10,6 +10,7 @@
 #include "../src/semantic/expression.h"
 
 extern int yylex();
+extern int yylineno;
 
 %}
 
@@ -42,7 +43,7 @@ extern int yylex();
 %token <bool_val> TK_TRUE TK_FALSE
 
 /* Puntuation and Operation Tokens  */
-%token TK_ASSIGN TK_COMMA TK_SEMICOLON
+%token TK_ASSIGN TK_COMMA TK_NEWLINE
 %token TK_PLUS TK_MINUS TK_MULT TK_DIV TK_MOD TK_POW
 %token TK_GT TK_GE TK_LT TK_LE TK_EQ TK_NE
 %token TK_NOT TK_AND TK_OR
@@ -58,15 +59,19 @@ extern int yylex();
 %%
 
 program:
-    declarations sentences
-    | declarations
-    | sentences
+    optional_newlines declarations optional_newlines sentence_list optional_newlines
+    | optional_newlines declarations optional_newlines
+    | optional_newlines sentence_list optional_newlines
 ;
 
+optional_newlines:
+    /* void */
+    | optional_newlines TK_NEWLINE
+;
 declarations:
     declarations simple_declaration
     | simple_declaration
-    | declarations error TK_SEMICOLON
+    | declarations error TK_NEWLINE
       {
         log_production("Recovered from error declarations");
         yyerrok;
@@ -74,15 +79,15 @@ declarations:
 ;
 
 simple_declaration: 
-    primitive_type id_list TK_SEMICOLON { handle_simple_declaration($1, $2); }
+    primitive_type id_list TK_NEWLINE { handle_simple_declaration($1, $2); }
     | primitive_type id_list error
     {
         SourceLocation loc = current_location();
-        REPORT_SYNTAX_ERROR(loc, "Missing ';' at the end of the statement");
+        REPORT_SYNTAX_ERROR(loc, "Invalid declaration structure or missing '\\n' at EOF");
         string_list_free($2);
         yyerrok;
     }
-    | primitive_type error TK_SEMICOLON
+    | primitive_type error TK_NEWLINE
     {
         log_production("Recovered from identifier list error");
         yyerrok;
@@ -100,10 +105,10 @@ id_list:
     | id_list TK_COMMA TK_ID { $$ = string_list_append($1, $3); }
 ;
 
-sentences:
+sentence_list:
     sentence
-    | sentences sentence
-    | sentences error TK_SEMICOLON
+    | sentence_list sentence
+    | sentence_list error TK_NEWLINE
       {
         log_production("Recovered from sentence error");
         yyerrok;
@@ -111,12 +116,12 @@ sentences:
 ;
 
 sentence:
-    assignment_sentence
+    assignment_sentence TK_NEWLINE
     //| expression_sentence
 ;
 
 assignment_sentence:
-    TK_ID TK_ASSIGN expression TK_SEMICOLON {
+    TK_ID TK_ASSIGN expression {
         handle_assigment_sentence($1, $3);
     }
 ;
@@ -140,6 +145,7 @@ arith_term:
     }
     | literal { $$ = $1; }
 ;
+
 literal:
     TK_INT_LIT
     {

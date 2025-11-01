@@ -1,40 +1,26 @@
 --- START OF ANALYSIS ---
-[PROD] Type: int
-[PROD] Declared identifier: 'a' (Type: 0)
-[PROD] Type: string
-[PROD] Declared identifier: 'b' (Type: 2)
+[PROD] Multiline comment start on row: 1 col: 2
+[PROD] Multicomment skipping characters
+[PROD] Multiline comment closed on row: 2 col: 20
 [PROD] Type: float
-[PROD] Declared identifier: 'c' (Type: 1)
+[PROD] Declared identifier: 'x' (Type: 1)
+[PROD] Type: int
+[PROD] Declared identifier: 'j' (Type: 0)
+[PROD] Declared identifier: 'i' (Type: 0)
+[PROD] Type: string
+[PROD] Declared identifier: 's' (Type: 2)
 [PROD] Type: bool
-[PROD] Declared identifier: 'd' (Type: 3)
-[PROD] Literal: Integer (3)
-[PROD] Assignment: 'a' = 3 [Type: 0]
+[PROD] Declared identifier: 'b' (Type: 3)
+[PROD] Skiped comment line
+[PROD] Literal: Float (1.500000)
+[PROD] Assignment: 'x' = 1.500000 [Type: 1]
+[PROD] Literal: Integer (5)
+[PROD] Assignment: 'i' = 5 [Type: 0]
 [PROD] Literal: String (Hola)
-[PROD] Assignment: 'b' = Hola [Type: 2]
-[PROD] Literal: Float (3.650000)
-[PROD] Assignment: 'c' = 3.650000 [Type: 1]
-[PROD] Literal: Integer (2)
-[PROD] Literal: Integer (65)
+[PROD] Assignment: 's' = Hola [Type: 2]
+[PROD] Literal: Integer (5)
+[PROD] Literal: Integer (5)
 [PROD] Evaluating mul
-[PROD] Assignment: 'a' = 130 [Type: 0]
-[PROD] Literal: Integer (2)
-[PROD] Literal: Integer (65)
-[PROD] Evaluating mul
-[PROD] Assignment: 'c' = 130.000000 [Type: 1]
-[PROD] Literal: Boolean (true)
-[PROD] Assignment: 'd' = 1 [Type: 3]
-[PROD] Literal: Boolean (false)
-[PROD] Assignment: 'd' = 0 [Type: 3]
-[PROD] Literal: Boolean (true)
-[PROD] Literal: Float (2.500000)
-[PROD] Literal: Integer (2)
-[PROD] Evaluating mul
-[PROD] Literal: Integer (3)
-[PROD] Evaluating add
-[PROD] Assignment: 'c' = 8.000000 [Type: 1]
-[PROD] Literal: Float (2.500000)
-[PROD] Literal: Integer (2)
-[PROD] Evaluating mul
-[PROD] Literal: Integer (3)
-[PROD] Evaluating add
+[PROD] Literal: Integer (1)
+[PROD] Assignment: 'i' = 1 [Type: 0]
 --- END OF ANALYSIS ---

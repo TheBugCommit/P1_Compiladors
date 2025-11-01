@@ -45,7 +45,7 @@
 extern int yydebug;
 #endif
 /* "%code requires" blocks.  */
-#line 16 "src/parser/parser.y"
+#line 17 "src/parser/parser.y"
 
   #include "data_types.h"
   #include "../src/data/string_list.h"
@@ -73,7 +73,7 @@ extern int yydebug;
     TK_FALSE = 267,                /* TK_FALSE  */
     TK_ASSIGN = 268,               /* TK_ASSIGN  */
     TK_COMMA = 269,                /* TK_COMMA  */
-    TK_SEMICOLON = 270,            /* TK_SEMICOLON  */
+    TK_NEWLINE = 270,              /* TK_NEWLINE  */
     TK_PLUS = 271,                 /* TK_PLUS  */
     TK_MINUS = 272,                /* TK_MINUS  */
     TK_MULT = 273,                 /* TK_MULT  */
@@ -99,7 +99,7 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 21 "src/parser/parser.y"
+#line 22 "src/parser/parser.y"
 
     char *text;
     DATA_TYPE data_type;
