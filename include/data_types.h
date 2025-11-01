@@ -11,7 +11,7 @@ typedef enum {
 
 typedef union {
     int int_val;
-    double float_val;
+    float float_val;
     char *string_val;
     char bool_val;
 } VALUE_UNION;

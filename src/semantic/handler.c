@@ -1,0 +1,94 @@
+#include "handler.h"
+#include "./expression.h"
+#include "../utils/log.h"
+#include "../utils/error.h"
+#include "../symtab/symtab.h"
+#include <stdlib.h>
+#include <string.h>
+
+void handle_simple_declaration(DATA_TYPE declared_type, StringListNode *list)
+{
+    StringListNode *current = list;
+
+    while (current != NULL)
+    {
+        sym_value_type new_entry;
+        new_entry.type = declared_type;
+        new_entry.is_initialized = 0;
+
+        int result = sym_add(current->id, &new_entry);
+        if (result == SYMTAB_DUPLICATE)
+        {
+            SourceLocation loc = current_location();
+            REPORT_SEMANTIC_ERROR(loc, "Identifier '%s' already declared", current->id);
+        }
+
+        log_production("Declared identifier: '%s' (Type: %d)", current->id, declared_type);
+
+        current = current->next;
+    }
+
+    string_list_free(current);
+}
+
+void handle_assigment_sentence(char *token_id, ExprResult expression)
+{
+    sym_value_type *entry = malloc(sizeof(sym_value_type));
+    int res = sym_lookup(token_id, entry);
+    if (res == SYMTAB_NOT_FOUND)
+    {
+        SourceLocation loc = current_location();
+        REPORT_SEMANTIC_ERROR(loc, "Assignment to undeclared identifier '%s'", token_id);
+        free_expr_string(&expression);
+        free(token_id);
+        return;
+    }
+
+    if (entry->type == TYPE_FLOAT && expression.type == TYPE_INT)
+    {
+        expression.type = TYPE_FLOAT;
+        expression.value.float_val = (double)expression.value.int_val;
+    }
+    else if (entry->type != expression.type)
+    {
+        SourceLocation loc = current_location();
+        REPORT_SEMANTIC_ERROR(loc, "Type mismatch in assignment to '%s'. Expected %d, got %d",
+                              token_id, entry->type, expression.type);
+        free_expr_string(&expression);
+        free(token_id);
+        return;
+    }
+
+    if (entry->type == TYPE_STRING && entry->is_initialized)
+    {
+        free(entry->value.string_val);
+        entry->value.string_val = NULL;
+    }
+
+    switch (entry->type)
+    {
+    case TYPE_STRING:
+        entry->value.string_val = strdup(expression.value.string_val);
+        log_production("Assignment: '%s' = %s [Type: %d]", token_id, entry->value.string_val, entry->type);
+        break;
+    case TYPE_BOOL:
+        entry->value.bool_val = expression.value.bool_val;
+        log_production("Assignment: '%s' = %d [Type: %d]", token_id, entry->value.bool_val, entry->type);
+        break;
+    case TYPE_INT:
+        entry->value.int_val = expression.value.int_val;
+        log_production("Assignment: '%s' = %d [Type: %d]", token_id, entry->value.int_val, entry->type);
+        break;
+    case TYPE_FLOAT:
+        entry->value.float_val = expression.value.float_val;
+        log_production("Assignment: '%s' = %f [Type: %d]", token_id, entry->value.float_val, entry->type);
+        break;
+    case TYPE_VOID:
+        break;
+    }
+
+    entry->is_initialized = 1;
+
+    free_expr_string(&expression);
+    free(token_id);
+}

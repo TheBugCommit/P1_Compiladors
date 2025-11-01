@@ -2,6 +2,7 @@
 #include "common.h"
 #include "parser.h"
 #include "../utils/error.h"
+#include "../utils/log.h"
 #include <math.h>
 #include <string.h>
 #include <stdio.h>
@@ -30,6 +31,7 @@ void check_boolean(ExprResult *e) {
 /* Implementación de la suma (con concatenación) */
 ExprResult eval_add(ExprResult a, ExprResult b) {
     ExprResult res;
+    log_production("Evaluating add");
     
     // Regla: num + string O string + num -> string
     if (a.type == TYPE_STRING || b.type == TYPE_STRING) {
@@ -55,8 +57,8 @@ ExprResult eval_add(ExprResult a, ExprResult b) {
     // Regla: float + ... O ... + float -> float
     else if (a.type == TYPE_FLOAT || b.type == TYPE_FLOAT) {
         res.type = TYPE_FLOAT;
-        double val_a = (a.type == TYPE_FLOAT) ? a.value.float_val : a.value.int_val;
-        double val_b = (b.type == TYPE_FLOAT) ? b.value.float_val : b.value.int_val;
+        float val_a = (a.type == TYPE_FLOAT) ? a.value.float_val : a.value.int_val;
+        float val_b = (b.type == TYPE_FLOAT) ? b.value.float_val : b.value.int_val;
         res.value.float_val = val_a + val_b;
     }
     // Regla: int + int -> int
@@ -75,6 +77,7 @@ ExprResult eval_add(ExprResult a, ExprResult b) {
 
 /* Implementación de resta (solo numérico) */
 ExprResult eval_sub(ExprResult a, ExprResult b) {
+    log_production("Evaluating sub");
     check_numeric(&a); check_numeric(&b);
     ExprResult res;
     if (a.type == TYPE_FLOAT || b.type == TYPE_FLOAT) {
@@ -91,12 +94,13 @@ ExprResult eval_sub(ExprResult a, ExprResult b) {
 
 /* Implementación de * (solo numérico) */
 ExprResult eval_mul(ExprResult a, ExprResult b) {
+    log_production("Evaluating mul");
     check_numeric(&a); check_numeric(&b);
     ExprResult res;
     if (a.type == TYPE_FLOAT || b.type == TYPE_FLOAT) {
         res.type = TYPE_FLOAT;
-        double val_a = (a.type == TYPE_FLOAT) ? a.value.float_val : a.value.int_val;
-        double val_b = (b.type == TYPE_FLOAT) ? b.value.float_val : b.value.int_val;
+        float val_a = (a.type == TYPE_FLOAT) ? a.value.float_val : a.value.int_val;
+        float val_b = (b.type == TYPE_FLOAT) ? b.value.float_val : b.value.int_val;
         res.value.float_val = val_a * val_b;
     } else {
         res.type = TYPE_INT;
@@ -107,6 +111,7 @@ ExprResult eval_mul(ExprResult a, ExprResult b) {
 
 /* Implementación de / (siempre devuelve float) */
 ExprResult eval_div(ExprResult a, ExprResult b) {
+    log_production("Evaluating div");
     check_numeric(&a); check_numeric(&b);
     ExprResult res;
     res.type = TYPE_FLOAT;
@@ -124,6 +129,7 @@ ExprResult eval_div(ExprResult a, ExprResult b) {
 
 /* Implementación de % (solo int) */
 ExprResult eval_mod(ExprResult a, ExprResult b) {
+    log_production("Evaluating mod");
     if (a.type != TYPE_INT || b.type != TYPE_INT) {
         SourceLocation loc = current_location();
         REPORT_SEMANTIC_ERROR(loc, "Type error: '%%' operator requires integer operands");
@@ -142,6 +148,7 @@ ExprResult eval_mod(ExprResult a, ExprResult b) {
 
 /* Implementación de ** (solo numérico) */
 ExprResult eval_pow(ExprResult a, ExprResult b) {
+    log_production("Evaluating pow");
     check_numeric(&a); check_numeric(&b);
     ExprResult res;
     double val_a = (a.type == TYPE_FLOAT) ? a.value.float_val : a.value.int_val;
@@ -161,6 +168,7 @@ ExprResult eval_pow(ExprResult a, ExprResult b) {
 
 /* Implementación de unario - */
 ExprResult eval_unary_minus(ExprResult a) {
+    log_production("Evaluating unary minus");
     check_numeric(&a);
     ExprResult res = a;
     if (a.type == TYPE_FLOAT) {
@@ -173,6 +181,7 @@ ExprResult eval_unary_minus(ExprResult a) {
 
 /* Implementación de relacionales (>, <, =, etc.) */
 ExprResult eval_relational(ExprResult a, ExprResult b, int op) {
+    log_production("Evaluating relational op");
     check_numeric(&a); check_numeric(&b);
     ExprResult res;
     res.type = TYPE_BOOL;
@@ -193,6 +202,7 @@ ExprResult eval_relational(ExprResult a, ExprResult b, int op) {
 
 /* Implementación de AND */
 ExprResult eval_and(ExprResult a, ExprResult b) {
+    log_production("Evaluating AND");
     check_boolean(&a); check_boolean(&b);
     ExprResult res;
     res.type = TYPE_BOOL;
@@ -202,6 +212,7 @@ ExprResult eval_and(ExprResult a, ExprResult b) {
 
 /* Implementación de OR */
 ExprResult eval_or(ExprResult a, ExprResult b) {
+    log_production("Evaluating OR");
     check_boolean(&a); check_boolean(&b);
     ExprResult res;
     res.type = TYPE_BOOL;
@@ -211,6 +222,7 @@ ExprResult eval_or(ExprResult a, ExprResult b) {
 
 /* Implementación de NOT */
 ExprResult eval_not(ExprResult a) {
+    log_production("Evaluating NOT");
     check_boolean(&a);
     ExprResult res;
     res.type = TYPE_BOOL;

@@ -6,7 +6,8 @@
 #include "../src/symtab/symtab.h"
 #include "../src/utils/error.h"
 #include "../src/data/string_list.h"
-#include "../src/semantic/declaration.h"
+#include "../src/semantic/handler.h"
+#include "../src/semantic/expression.h"
 
 extern int yylex();
 
@@ -23,7 +24,7 @@ extern int yylex();
     StringListNode *id_list;
 
     int int_val;
-    double float_val;
+    float float_val;
     char bool_val;
 
     ExprResult expr_val;
@@ -50,7 +51,7 @@ extern int yylex();
 %type <data_type> primitive_type
 %type <id_list> id_list
 /*%type <expr_val> expression bool_term bool_factor relational_expr arith_expr arith_term arith_factor primary literal*/
-%type <expr_val> expression literal
+%type <expr_val> expression literal arith_term arith_expr
 
 %define parse.error detailed
 
@@ -110,10 +111,65 @@ sentences:
 ;
 
 sentence:
-    TK_ID TK_EQ TK_SEMICOLON  // TODO: posar expressio
-    {
-        log_production("Assignment sentence");
+    assignment_sentence
+    //| expression_sentence
+;
+
+assignment_sentence:
+    TK_ID TK_ASSIGN expression TK_SEMICOLON {
+        handle_assigment_sentence($1, $3);
     }
 ;
 
+expression:
+    arith_expr
+;
+
+arith_expr:
+    arith_expr TK_PLUS arith_term {
+        $$ = eval_add($1, $3);
+        free_expr_string(&$1); free_expr_string(&$3);
+    }
+    | arith_term { $$ = $1; }
+;
+arith_term:
+    arith_term TK_MULT literal
+    {
+        $$ = eval_mul($1, $3);
+        free_expr_string(&$1); free_expr_string(&$3);
+    }
+    | literal { $$ = $1; }
+;
+literal:
+    TK_INT_LIT
+    {
+        $$.type = TYPE_INT;
+        $$.value.int_val = $1;
+        log_production("Literal: Integer (%d)", $1);
+    }
+    | TK_FLOAT_LIT
+    {
+        $$.type = TYPE_FLOAT;
+        $$.value.float_val = $1;
+        log_production("Literal: Float (%f)", $1);
+    }
+    | TK_STRING_LIT
+    {
+        $$.type = TYPE_STRING;
+        $$.value.string_val = $1;
+        log_production("Literal: String (%s)", $1);
+    }
+    | TK_TRUE
+    {
+        $$.type = TYPE_BOOL;
+        $$.value.bool_val = $1;
+        log_production("Literal: Boolean (true)");
+    }
+    | TK_FALSE
+    {
+        $$.type = TYPE_BOOL;
+        $$.value.bool_val = $1;
+        log_production("Literal: Boolean (false)");
+    }
+;
 %%

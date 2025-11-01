@@ -37,10 +37,10 @@ void log_production(const char *format, ...) {
     va_end(args);
     
     if (log_file) {
-        fprintf(log_file, "[PRODUCTION] %s\n", full_message);
+        fprintf(log_file, "[PROD] %s\n", full_message);
         fflush(log_file);
     } else {
-        printf("[PRODUCTION] %s\n", full_message);
+        printf("[PROD] %s\n", full_message);
         fflush(stdout);
     }
 }

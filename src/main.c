@@ -3,7 +3,6 @@
 #include "utils/error.h"
 #include "utils/log.h"
 
-// Declaraciones de funciones de Bison/Flex
 extern int yyparse(void);
 extern FILE* yyin;
 
@@ -29,9 +28,9 @@ int main(int argc, char* argv[]) {
 
     int parse_result = yyparse();
     if (parse_result == 0 && !has_errors()) {
-        printf("=== ✅ COMPILATION COMPLETE ===\n");
+        printf("=== COMPILATION COMPLETE ===\n");
     } else {
-        printf("=== ❌ COMPILATION FAILED ===\n");
+        printf("=== COMPILATION FAILED ===\n");
     }
     printf("   - Number of errores encoutered: %d\n", get_error_count());
     

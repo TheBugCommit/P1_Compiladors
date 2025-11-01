@@ -45,7 +45,7 @@
 extern int yydebug;
 #endif
 /* "%code requires" blocks.  */
-#line 15 "src/parser/parser.y"
+#line 16 "src/parser/parser.y"
 
   #include "data_types.h"
   #include "../src/data/string_list.h"
@@ -99,14 +99,14 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 20 "src/parser/parser.y"
+#line 21 "src/parser/parser.y"
 
     char *text;
     DATA_TYPE data_type;
     StringListNode *id_list;
 
     int int_val;
-    double float_val;
+    float float_val;
     char bool_val;
 
     ExprResult expr_val;
