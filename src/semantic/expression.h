@@ -5,6 +5,7 @@
 
 void free_expr_string(ExprResult *e);
 int is_numeric(ExprResult *e);
+int is_int(ExprResult *e);
 int is_boolean(ExprResult *e);
 int is_string(ExprResult *e);
 ExprResult eval_add(ExprResult a, ExprResult b);

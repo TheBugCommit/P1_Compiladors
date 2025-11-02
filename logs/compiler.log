@@ -1,5 +1,6 @@
 --- START OF ANALYSIS ---
 [PROD] Type: string
+[PROD] Declared identifier: 'd' (Type: STRING)
 [PROD] Declared identifier: 's' (Type: STRING)
 [PROD] Literal: STRING (Hola)
 [PROD] Assignment: 's' = Hola [Type: STRING]
@@ -13,6 +14,8 @@
 [PROD] Evaluating add
 [PROD] Literal: INT (1)
 [PROD] Evaluating add
+[PROD] Assignment: 'd' = Hola Mundo 1 [Type: STRING]
+[PROD] Symbtab updated
 [PROD] Expression: Identifier 's'
 [PROD] Literal: STRING ( )
 [PROD] Evaluating add
@@ -21,4 +24,71 @@
 [PROD] Literal: INT (1)
 [PROD] Evaluating add
 [PROD] Evaluating LEN()
+[PROD] Literal: INT (1)
+[PROD] Evaluating LEN()
+[PROD] Literal: BOOLEAN (true)
+[PROD] Evaluating LEN()
+[PROD] Expression: Identifier 'd'
+[PROD] Literal: STRING (hola)
+[PROD] Evaluating add
+[PROD] Literal: STRING (!!!)
+[PROD] Evaluating add
+[PROD] Expression: Identifier 'd'
+[PROD] Evaluating LEN()
+[PROD] Literal: INT (2)
+[PROD] Literal: INT (3)
+[PROD] Evaluating mul
+[PROD] Evaluating sub
+[PROD] Literal: INT (10)
+[PROD] Evaluating SUBSTR()
+[PROD] Literal: BOOLEAN (true)
+[PROD] Expression: Identifier 'd'
+[PROD] Evaluating LEN()
+[PROD] Literal: INT (2)
+[PROD] Literal: INT (3)
+[PROD] Evaluating mul
+[PROD] Evaluating sub
+[PROD] Literal: INT (10)
+[PROD] Evaluating SUBSTR()
+[PROD] Literal: INT (1)
+[PROD] Expression: Identifier 'd'
+[PROD] Evaluating LEN()
+[PROD] Literal: INT (2)
+[PROD] Literal: INT (3)
+[PROD] Evaluating mul
+[PROD] Evaluating sub
+[PROD] Literal: INT (10)
+[PROD] Evaluating SUBSTR()
+[PROD] Expression: Identifier 'd'
+[PROD] Literal: STRING (hola)
+[PROD] Evaluating add
+[PROD] Literal: STRING (!!!)
+[PROD] Evaluating add
+[PROD] Literal: BOOLEAN (true)
+[PROD] Literal: INT (10)
+[PROD] Evaluating SUBSTR()
+[PROD] Expression: Identifier 'd'
+[PROD] Literal: STRING (hola)
+[PROD] Evaluating add
+[PROD] Literal: STRING (!!!)
+[PROD] Evaluating add
+[PROD] Literal: STRING (a)
+[PROD] Literal: INT (10)
+[PROD] Evaluating SUBSTR()
+[PROD] Expression: Identifier 'd'
+[PROD] Literal: STRING (hola)
+[PROD] Evaluating add
+[PROD] Literal: STRING (!!!)
+[PROD] Evaluating add
+[PROD] Literal: INT (1)
+[PROD] Literal: BOOLEAN (true)
+[PROD] Evaluating SUBSTR()
+[PROD] Expression: Identifier 'd'
+[PROD] Literal: STRING (hola)
+[PROD] Evaluating add
+[PROD] Literal: STRING (!!!)
+[PROD] Evaluating add
+[PROD] Literal: INT (1)
+[PROD] Literal: STRING (a)
+[PROD] Evaluating SUBSTR()
 --- END OF ANALYSIS ---

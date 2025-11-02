@@ -48,6 +48,16 @@ int is_string(ExprResult* e) {
     return 1;
 }
 
+int is_int(ExprResult* e) {
+    if (e->type != TYPE_INT) {
+        REPORT_SEMANTIC_ERROR(current_location(), "Type error: expected %s type",
+                              TYPE_NAME[TYPE_INT]);
+        return 0;
+    }
+
+    return 1;
+}
+
 ExprResult eval_add(ExprResult a, ExprResult b) {
     ExprResult res;
     log_production("Evaluating add");

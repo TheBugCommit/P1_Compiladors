@@ -2,9 +2,11 @@
 
 #include <math.h>
 #include <string.h>
+#include <stdlib.h> 
 
 #include "./expression.h"
 #include "../utils/log.h"
+#include "../utils/error.h"
 
 ExprResult eval_sin(ExprResult e) {
     log_production("Evaluating sin()");
@@ -68,6 +70,37 @@ ExprResult eval_len(ExprResult e) {
 
     res.type = TYPE_INT;
     res.value.int_val = strlen(e.value.string_val);
+
+    return res;
+}
+
+ExprResult eval_substr(ExprResult input, ExprResult start, ExprResult len) {
+    log_production("Evaluating SUBSTR()");
+    ExprResult res;
+
+    if (!is_string(&input)) {
+        res.type = TYPE_VOID;
+        return res;
+    }
+
+    if(!(is_int(&start) && is_int(&len))){
+        res.type = TYPE_VOID;
+        return res;
+    }
+
+    long long int pos = start.value.int_val;
+    long long int count = len.value.int_val;
+
+    if (pos < 0 || count < 0 || pos >= strlen(input.value.string_val)) {
+        REPORT_SEMANTIC_ERROR(current_location(), "Error: SUBSTR() out of range")
+        res.type = TYPE_VOID;
+        return res;
+    }
+
+    res.type = TYPE_STRING;
+    res.value.string_val = (char*) malloc(count + 1);
+    strncpy(res.value.string_val, input.value.string_val + pos, count);
+    res.value.string_val[count] = '\0';
 
     return res;
 }

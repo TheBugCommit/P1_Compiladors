@@ -204,6 +204,12 @@ primary:
     | TK_COS TK_LPAREN expression TK_RPAREN { $$ = eval_cos($3); free_expr_string(&$3); }
     | TK_TAN TK_LPAREN expression TK_RPAREN { $$ = eval_tan($3); free_expr_string(&$3); }
     | TK_LEN TK_LPAREN expression TK_RPAREN { $$ = eval_len($3); free_expr_string(&$3); }
+    | TK_SUBSTR TK_LPAREN expression TK_SEMICOLON expression TK_SEMICOLON expression TK_RPAREN { 
+        $$ = eval_substr($3, $5, $7); 
+        free_expr_string(&$3); 
+        free_expr_string(&$5); 
+        free_expr_string(&$7); 
+    }
 ;
 
 literal:
