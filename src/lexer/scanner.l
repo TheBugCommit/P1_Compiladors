@@ -104,11 +104,13 @@ UNCLOSED_STRING \"[^\n\"]*(\n|$)
 "("         { return TK_LPAREN; }
 ")"         { return TK_RPAREN; }
 
-%{ /* Operators and expression keywords */ %}
+%{ /* Functions */ %}
 
 "sin"       { return TK_SIN; }
 "cos"       { return TK_COS; }
 "tan"       { return TK_TAN; }
+"LEN"       { return TK_LEN; }
+"SUBSTR"      { return TK_SUBSTR; }
 
 %{ /* Literals */ %}
 
@@ -168,6 +170,7 @@ UNCLOSED_STRING \"[^\n\"]*(\n|$)
 
 %{ /* Puntuation */ %}
 ","         { return TK_COMMA; }
+";"         { return TK_SEMICOLON; }
 
 {WHITESPACE}+      { }
 {RETURN}+          { return TK_NEWLINE; }

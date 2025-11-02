@@ -19,8 +19,7 @@ void free_expr_string(ExprResult* e) {
 
 int is_numeric(ExprResult* e) {
     if (e->type != TYPE_INT && e->type != TYPE_FLOAT) {
-        SourceLocation loc = current_location();
-        REPORT_SEMANTIC_ERROR(loc,
+        REPORT_SEMANTIC_ERROR(current_location(),
                               "Type error: expected numeric type (%s or %s)",
                               TYPE_NAME[TYPE_INT], TYPE_NAME[TYPE_FLOAT]);
         return 0;
@@ -31,9 +30,18 @@ int is_numeric(ExprResult* e) {
 
 int is_boolean(ExprResult* e) {
     if (e->type != TYPE_BOOL) {
-        SourceLocation loc = current_location();
-        REPORT_SEMANTIC_ERROR(loc, "Type error: expected %s type",
+        REPORT_SEMANTIC_ERROR(current_location(), "Type error: expected %s type",
                               TYPE_NAME[TYPE_BOOL]);
+        return 0;
+    }
+
+    return 1;
+}
+
+int is_string(ExprResult* e) {
+    if (e->type != TYPE_STRING) {
+        REPORT_SEMANTIC_ERROR(current_location(), "Type error: expected %s type",
+                              TYPE_NAME[TYPE_STRING]);
         return 0;
     }
 

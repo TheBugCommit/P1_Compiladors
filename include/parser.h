@@ -74,26 +74,29 @@ extern int yydebug;
     TK_ASSIGN = 268,               /* TK_ASSIGN  */
     TK_COMMA = 269,                /* TK_COMMA  */
     TK_NEWLINE = 270,              /* TK_NEWLINE  */
-    TK_PLUS = 271,                 /* TK_PLUS  */
-    TK_MINUS = 272,                /* TK_MINUS  */
-    TK_MULT = 273,                 /* TK_MULT  */
-    TK_DIV = 274,                  /* TK_DIV  */
-    TK_MOD = 275,                  /* TK_MOD  */
-    TK_POW = 276,                  /* TK_POW  */
-    TK_GT = 277,                   /* TK_GT  */
-    TK_GE = 278,                   /* TK_GE  */
-    TK_LT = 279,                   /* TK_LT  */
-    TK_LE = 280,                   /* TK_LE  */
-    TK_EQ = 281,                   /* TK_EQ  */
-    TK_NE = 282,                   /* TK_NE  */
-    TK_NOT = 283,                  /* TK_NOT  */
-    TK_AND = 284,                  /* TK_AND  */
-    TK_OR = 285,                   /* TK_OR  */
-    TK_LPAREN = 286,               /* TK_LPAREN  */
-    TK_RPAREN = 287,               /* TK_RPAREN  */
-    TK_SIN = 288,                  /* TK_SIN  */
-    TK_COS = 289,                  /* TK_COS  */
-    TK_TAN = 290                   /* TK_TAN  */
+    TK_SEMICOLON = 271,            /* TK_SEMICOLON  */
+    TK_PLUS = 272,                 /* TK_PLUS  */
+    TK_MINUS = 273,                /* TK_MINUS  */
+    TK_MULT = 274,                 /* TK_MULT  */
+    TK_DIV = 275,                  /* TK_DIV  */
+    TK_MOD = 276,                  /* TK_MOD  */
+    TK_POW = 277,                  /* TK_POW  */
+    TK_GT = 278,                   /* TK_GT  */
+    TK_GE = 279,                   /* TK_GE  */
+    TK_LT = 280,                   /* TK_LT  */
+    TK_LE = 281,                   /* TK_LE  */
+    TK_EQ = 282,                   /* TK_EQ  */
+    TK_NE = 283,                   /* TK_NE  */
+    TK_NOT = 284,                  /* TK_NOT  */
+    TK_AND = 285,                  /* TK_AND  */
+    TK_OR = 286,                   /* TK_OR  */
+    TK_LPAREN = 287,               /* TK_LPAREN  */
+    TK_RPAREN = 288,               /* TK_RPAREN  */
+    TK_SIN = 289,                  /* TK_SIN  */
+    TK_COS = 290,                  /* TK_COS  */
+    TK_TAN = 291,                  /* TK_TAN  */
+    TK_LEN = 292,                  /* TK_LEN  */
+    TK_SUBSTR = 293                /* TK_SUBSTR  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -114,7 +117,7 @@ union YYSTYPE
 
     ExprResult expr_val;
 
-#line 118 "build/parser.tab.h"
+#line 121 "build/parser.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

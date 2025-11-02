@@ -46,14 +46,14 @@ extern int yylineno;
 %token <bool_val> TK_TRUE TK_FALSE
 
 /* Puntuation and Operation Tokens  */
-%token TK_ASSIGN TK_COMMA TK_NEWLINE
+%token TK_ASSIGN TK_COMMA TK_NEWLINE TK_SEMICOLON
 %token TK_PLUS TK_MINUS TK_MULT TK_DIV TK_MOD TK_POW
 %token TK_GT TK_GE TK_LT TK_LE TK_EQ TK_NE
 %token TK_NOT TK_AND TK_OR
 %token TK_LPAREN TK_RPAREN
 
 /* Functions */
-%token TK_SIN TK_COS TK_TAN
+%token TK_SIN TK_COS TK_TAN TK_LEN TK_SUBSTR
 
 %type <data_type> primitive_type
 %type <id_list> id_list
@@ -203,6 +203,7 @@ primary:
     | TK_SIN TK_LPAREN expression TK_RPAREN { $$ = eval_sin($3); free_expr_string(&$3); }
     | TK_COS TK_LPAREN expression TK_RPAREN { $$ = eval_cos($3); free_expr_string(&$3); }
     | TK_TAN TK_LPAREN expression TK_RPAREN { $$ = eval_tan($3); free_expr_string(&$3); }
+    | TK_LEN TK_LPAREN expression TK_RPAREN { $$ = eval_len($3); free_expr_string(&$3); }
 ;
 
 literal:

@@ -6,5 +6,6 @@
 ExprResult eval_sin(ExprResult e);
 ExprResult eval_cos(ExprResult e);
 ExprResult eval_tan(ExprResult e);
+ExprResult eval_len(ExprResult e);
 
 #endif

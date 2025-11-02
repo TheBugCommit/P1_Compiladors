@@ -1,14 +1,24 @@
 --- START OF ANALYSIS ---
-[PROD] Literal: INT (3)
-[PROD] Literal: INT (2)
-[PROD] Evaluating pow
-[PROD] Evaluating sin()
-[PROD] Literal: INT (10)
-[PROD] Literal: INT (1)
-[PROD] Literal: FLOAT (5.300000)
-[PROD] Evaluating mul
+[PROD] Type: string
+[PROD] Declared identifier: 's' (Type: STRING)
+[PROD] Literal: STRING (Hola)
+[PROD] Assignment: 's' = Hola [Type: STRING]
+[PROD] Symbtab updated
+[PROD] Expression: Identifier 's'
+[PROD] Evaluating LEN()
+[PROD] Expression: Identifier 's'
+[PROD] Literal: STRING ( )
 [PROD] Evaluating add
-[PROD] Evaluating cos()
-[PROD] Literal: FLOAT (3.500000)
-[PROD] Evaluating tan()
+[PROD] Literal: STRING (Mundo )
+[PROD] Evaluating add
+[PROD] Literal: INT (1)
+[PROD] Evaluating add
+[PROD] Expression: Identifier 's'
+[PROD] Literal: STRING ( )
+[PROD] Evaluating add
+[PROD] Literal: STRING (Mundo )
+[PROD] Evaluating add
+[PROD] Literal: INT (1)
+[PROD] Evaluating add
+[PROD] Evaluating LEN()
 --- END OF ANALYSIS ---
