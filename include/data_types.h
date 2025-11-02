@@ -10,8 +10,8 @@ typedef enum {
 } DATA_TYPE;
 
 typedef union {
-    int int_val;
-    float float_val;
+    long long int int_val;
+    double float_val;
     char *string_val;
     char bool_val;
 } VALUE_UNION;

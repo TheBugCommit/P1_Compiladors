@@ -19,10 +19,7 @@ void handle_simple_declaration(DATA_TYPE declared_type, StringListNode *list)
 
         int result = sym_add(current->id, &new_entry);
         if (result == SYMTAB_DUPLICATE)
-        {
-            SourceLocation loc = current_location();
-            REPORT_SEMANTIC_ERROR(loc, "Identifier '%s' already declared", current->id);
-        }
+            REPORT_SEMANTIC_ERROR(current_location(), "Identifier '%s' already declared", current->id);
 
         log_production("Declared identifier: '%s' (Type: %s)", current->id, TYPE_NAME[declared_type]);
 
@@ -38,8 +35,7 @@ void handle_assigment_sentence(char *token_id, ExprResult expression)
     int res = sym_lookup(token_id, entry);
     if (res == SYMTAB_NOT_FOUND)
     {
-        SourceLocation loc = current_location();
-        REPORT_SEMANTIC_ERROR(loc, "Assignment to undeclared identifier '%s'", token_id);
+        REPORT_SEMANTIC_ERROR(current_location(), "Assignment to undeclared identifier '%s'", token_id);
         free_expr_string(&expression);
         free(token_id);
         return;
@@ -52,8 +48,7 @@ void handle_assigment_sentence(char *token_id, ExprResult expression)
     }
     else if (entry->type != expression.type)
     {
-        SourceLocation loc = current_location();
-        REPORT_SEMANTIC_ERROR(loc, "Type mismatch in assignment to '%s'. Expected %s, got %s",
+        REPORT_SEMANTIC_ERROR(current_location(), "Type mismatch in assignment to '%s'. Expected %s, got %s",
                               token_id, TYPE_NAME[entry->type], TYPE_NAME[expression.type]);
         free_expr_string(&expression);
         free(token_id);
@@ -78,11 +73,11 @@ void handle_assigment_sentence(char *token_id, ExprResult expression)
         break;
     case TYPE_INT:
         entry->value.int_val = expression.value.int_val;
-        log_production("Assignment: '%s' = %d [Type: %s]", token_id, entry->value.int_val, TYPE_NAME[entry->type]);
+        log_production("Assignment: '%s' = %lld [Type: %s]", token_id, entry->value.int_val, TYPE_NAME[entry->type]);
         break;
     case TYPE_FLOAT:
         entry->value.float_val = expression.value.float_val;
-        log_production("Assignment: '%s' = %f [Type: %s]", token_id, entry->value.float_val, TYPE_NAME[entry->type]);
+        log_production("Assignment: '%s' = %g [Type: %s]", token_id, entry->value.float_val, TYPE_NAME[entry->type]);
         break;
     case TYPE_VOID:
         break;
@@ -106,14 +101,12 @@ ExprResult handle_primary_id(char *token_id)
     int res = sym_lookup(token_id, entry);
     if (res != SYMTAB_OK)
     {
-        SourceLocation loc = current_location();
-        REPORT_SEMANTIC_ERROR(loc, "Identifier '%s' not declared", token_id);
+        REPORT_SEMANTIC_ERROR(current_location(), "Identifier '%s' not declared", token_id);
         expr.type = TYPE_VOID;
     }
     else if (entry->is_initialized == 0)
     {
-        SourceLocation loc = current_location();
-        REPORT_SEMANTIC_ERROR(loc, "Identifier '%s' used before initialization", token_id);
+        REPORT_SEMANTIC_ERROR(current_location(), "Identifier '%s' used before initialization", token_id);
         expr.type = TYPE_VOID;
     }
     else

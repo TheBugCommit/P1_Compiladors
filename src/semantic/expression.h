@@ -4,8 +4,8 @@
 #include "data_types.h"
 
 void free_expr_string(ExprResult *e);
-void check_numeric(ExprResult *e);
-void check_boolean(ExprResult *e);
+int is_numeric(ExprResult *e);
+int is_boolean(ExprResult *e);
 ExprResult eval_add(ExprResult a, ExprResult b);
 ExprResult eval_sub(ExprResult a, ExprResult b);
 ExprResult eval_mul(ExprResult a, ExprResult b);

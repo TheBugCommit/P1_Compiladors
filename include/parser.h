@@ -105,8 +105,8 @@ union YYSTYPE
     DATA_TYPE data_type;
     StringListNode *id_list;
 
-    int int_val;
-    float float_val;
+    long long int_val;
+    double float_val;
     char bool_val;
 
     ExprResult expr_val;

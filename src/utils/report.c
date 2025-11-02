@@ -6,10 +6,10 @@ void print_value(ExprResult e) {
     printf("Value: ");
     switch (e.type) {
         case TYPE_INT:
-            printf("%d", e.value.int_val);
+            printf("%lld", e.value.int_val);
             break;
         case TYPE_FLOAT:
-            printf("%.2f", e.value.float_val);
+            printf("%g", e.value.float_val);
             break;
         case TYPE_STRING:
             if (e.value.string_val) {

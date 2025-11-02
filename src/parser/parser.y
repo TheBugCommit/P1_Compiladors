@@ -26,8 +26,8 @@ extern int yylineno;
     DATA_TYPE data_type;
     StringListNode *id_list;
 
-    int int_val;
-    float float_val;
+    long long int_val;
+    double float_val;
     char bool_val;
 
     ExprResult expr_val;
@@ -70,7 +70,7 @@ optional_newlines:
     | optional_newlines TK_NEWLINE
 ;
 declarations:
-    declarations simple_declaration
+    declarations optional_newlines simple_declaration
     | simple_declaration
     | declarations error TK_NEWLINE
       {
@@ -108,7 +108,7 @@ id_list:
 
 sentence_list:
     sentence
-    | sentence_list sentence
+    | sentence_list optional_newlines sentence
     | sentence_list error TK_NEWLINE
       {
         log_production("Recovered from sentence error");

@@ -2,6 +2,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <errno.h>
+#include <limits.h>
 #include "parser.h"
 #include "data_types.h"
 #include "../src/utils/log.h"
@@ -71,7 +73,8 @@ UNCLOSED_STRING \"[^\n\"]*(\n|$)
     BEGIN(INITIAL);
 }
 
-{COMMENT}.* { log_production("Skiped comment line"); }
+{COMMENT}[^\n]*     { log_production("Skipped comment until EOL"); }
+{COMMENT}[^\n]*\n   { log_production("Skipped full comment line"); }
 
 %{ /* Types */ %}
 
@@ -106,8 +109,38 @@ UNCLOSED_STRING \"[^\n\"]*(\n|$)
 "true"      { yylval.bool_val = 1; return TK_TRUE; }
 "false"     { yylval.bool_val = 0; return TK_FALSE; }
 
-{FLOAT}     { yylval.float_val = atof(yytext); return TK_FLOAT_LIT; }
-{INT}       { yylval.int_val = atoi(yytext); return TK_INT_LIT; }
+{FLOAT}     { 
+    errno = 0;
+    char *endptr;
+    double val = strtod(yytext, &endptr);
+
+    if (endptr == yytext) {
+        REPORT_LEXICAL_ERROR(current_location(), "Invalid float literal: %s", yytext);
+    }
+    else if (errno == ERANGE) {
+        REPORT_LEXICAL_ERROR(current_location(), "Float literal out of range: %s", yytext);
+    }
+    else {
+        yylval.float_val = val;
+        return TK_FLOAT_LIT;
+    }
+}
+
+{INT}       { 
+    errno = 0;
+    char *endptr;
+    long long val = strtoll(yytext, &endptr, 10);
+    if (endptr == yytext) {
+        REPORT_LEXICAL_ERROR(current_location(), "Invalid integer literal: %s", yytext);
+    }
+    else if (errno == ERANGE || val > LLONG_MAX || val < LLONG_MIN) {
+        REPORT_LEXICAL_ERROR(current_location(), "Integer literal out of range: %s", yytext);
+    }
+    else {
+        yylval.int_val = val;
+        return TK_INT_LIT;
+    }
+}
 
 {STRING}    { yylval.text = unescape_string(yytext); return TK_STRING_LIT; }
 {UNCLOSED_STRING}  {
