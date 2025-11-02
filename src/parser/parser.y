@@ -10,6 +10,7 @@
 #include "../src/semantic/string_list.h"
 #include "../src/semantic/handler.h"
 #include "../src/semantic/expression.h"
+#include "../src/semantic/function.h"
 
 extern int yylex();
 extern int yylineno;
@@ -50,6 +51,9 @@ extern int yylineno;
 %token TK_GT TK_GE TK_LT TK_LE TK_EQ TK_NE
 %token TK_NOT TK_AND TK_OR
 %token TK_LPAREN TK_RPAREN
+
+/* Functions */
+%token TK_SIN TK_COS TK_TAN
 
 %type <data_type> primitive_type
 %type <id_list> id_list
@@ -196,6 +200,9 @@ primary:
     TK_LPAREN expression TK_RPAREN { $$ = $2; log_production("Expression: Parenthesized"); }
     | literal { $$ = $1; }
     | TK_ID { $$ = handle_primary_id($1); }
+    | TK_SIN TK_LPAREN expression TK_RPAREN { $$ = eval_sin($3); free_expr_string(&$3); }
+    | TK_COS TK_LPAREN expression TK_RPAREN { $$ = eval_cos($3); free_expr_string(&$3); }
+    | TK_TAN TK_LPAREN expression TK_RPAREN { $$ = eval_tan($3); free_expr_string(&$3); }
 ;
 
 literal:

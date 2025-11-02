@@ -45,7 +45,7 @@
 extern int yydebug;
 #endif
 /* "%code requires" blocks.  */
-#line 19 "src/parser/parser.y"
+#line 20 "src/parser/parser.y"
 
   #include "data_types.h"
   #include "../src/semantic/string_list.h"
@@ -90,7 +90,10 @@ extern int yydebug;
     TK_AND = 284,                  /* TK_AND  */
     TK_OR = 285,                   /* TK_OR  */
     TK_LPAREN = 286,               /* TK_LPAREN  */
-    TK_RPAREN = 287                /* TK_RPAREN  */
+    TK_RPAREN = 287,               /* TK_RPAREN  */
+    TK_SIN = 288,                  /* TK_SIN  */
+    TK_COS = 289,                  /* TK_COS  */
+    TK_TAN = 290                   /* TK_TAN  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -99,7 +102,7 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 24 "src/parser/parser.y"
+#line 25 "src/parser/parser.y"
 
     char *text;
     DATA_TYPE data_type;
@@ -111,7 +114,7 @@ union YYSTYPE
 
     ExprResult expr_val;
 
-#line 115 "build/parser.tab.h"
+#line 118 "build/parser.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

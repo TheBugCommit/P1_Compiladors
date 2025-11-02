@@ -104,6 +104,12 @@ UNCLOSED_STRING \"[^\n\"]*(\n|$)
 "("         { return TK_LPAREN; }
 ")"         { return TK_RPAREN; }
 
+%{ /* Operators and expression keywords */ %}
+
+"sin"       { return TK_SIN; }
+"cos"       { return TK_COS; }
+"tan"       { return TK_TAN; }
+
 %{ /* Literals */ %}
 
 "true"      { yylval.bool_val = 1; return TK_TRUE; }
