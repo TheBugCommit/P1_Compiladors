@@ -53,7 +53,7 @@ extern int yylineno;
 
 %type <data_type> primitive_type
 %type <id_list> id_list
-%type <expr_val> expression arith_term arith_expr arith_factor bool_term bool_factor relational_expr primary literal
+%type <expr_val> expression arith_term arith_expr arith_unit arith_factor bool_term bool_factor relational_expr primary literal
 
 %define parse.error detailed
 
@@ -138,31 +138,19 @@ expression_sentence:
 
 
 expression:
-    expression TK_OR bool_term
-    {
-        $$ = eval_or($1, $3);
-        free_expr_string(&$1); free_expr_string(&$3);
-    }
+    expression TK_OR bool_term { $$ = eval_or($1, $3); free_expr_string(&$1); free_expr_string(&$3); }
     | bool_term { $$ = $1; }
 ;
 
 /* Nivel 2: AND */
 bool_term:
-    bool_term TK_AND bool_factor
-    {
-        $$ = eval_and($1, $3);
-        free_expr_string(&$1); free_expr_string(&$3);
-    }
+    bool_term TK_AND bool_factor { $$ = eval_and($1, $3); free_expr_string(&$1); free_expr_string(&$3); }
     | bool_factor { $$ = $1; }
 ;
 
 /* Nivel 3: NOT */
 bool_factor:
-    TK_NOT bool_factor
-    {
-        $$ = eval_not($2);
-        free_expr_string(&$2);
-    }
+    TK_NOT bool_factor { $$ = eval_not($2); free_expr_string(&$2); }
     | relational_expr { $$ = $1; }
 ;
 
@@ -179,70 +167,35 @@ relational_expr:
 
 /* Nivel 5: Suma, Resta, Unario +/- */
 arith_expr:
-    arith_expr TK_PLUS arith_term
-    {
-        $$ = eval_add($1, $3);
-        free_expr_string(&$1); free_expr_string(&$3);
-    }
-    | arith_expr TK_MINUS arith_term
-    {
-        $$ = eval_sub($1, $3);
-        free_expr_string(&$1); free_expr_string(&$3);
-    }
-    | TK_PLUS arith_term 
-    { 
-        $$ = eval_unary_minus($2); 
-        free_expr_string(&$2); 
-    }
-    | TK_MINUS arith_term 
-    { 
-        $$ = eval_unary_minus($2); 
-        free_expr_string(&$2);
-    }
-    | arith_term { $$ = $1; }
+    arith_expr TK_PLUS arith_term    { $$ = eval_add($1, $3); free_expr_string(&$1); free_expr_string(&$3); }
+  | arith_expr TK_MINUS arith_term   { $$ = eval_sub($1, $3); free_expr_string(&$1); free_expr_string(&$3); }
+  | arith_term                       { $$ = $1; }
 ;
 
 /* Nivel 6: *, /, % */
 arith_term:
-    arith_term TK_MULT arith_factor
-    {
-        $$ = eval_mul($1, $3);
-        free_expr_string(&$1); free_expr_string(&$3);
-    }
-    | arith_term TK_DIV arith_factor
-    {
-        $$ = eval_div($1, $3);
-        free_expr_string(&$1); free_expr_string(&$3);
-    }
-    | arith_term TK_MOD arith_factor
-    {
-        $$ = eval_mod($1, $3);
-        free_expr_string(&$1); free_expr_string(&$3);
-    }
-    | arith_factor { $$ = $1; }
+    arith_term TK_MULT arith_unit { $$ = eval_mul($1, $3); free_expr_string(&$1); free_expr_string(&$3); }
+  | arith_term TK_DIV arith_unit  { $$ = eval_div($1, $3); free_expr_string(&$1); free_expr_string(&$3); }
+  | arith_term TK_MOD arith_unit  { $$ = eval_mod($1, $3); free_expr_string(&$1); free_expr_string(&$3); }
+  | arith_unit                    { $$ = $1; }
+;
+
+arith_unit:
+    TK_PLUS arith_unit    { $$ = eval_unary_plus($2); free_expr_string(&$2); }
+  | TK_MINUS arith_unit   { $$ = eval_unary_minus($2); free_expr_string(&$2); }
+  | arith_factor          { $$ = $1; }
 ;
 
 /* Nivel 7: Potencia (**) (Asociativa por la derecha) */
 arith_factor:
-    primary TK_POW arith_factor
-    {
-        $$ = eval_pow($1, $3);
-        free_expr_string(&$1); free_expr_string(&$3);
-    }
+    primary TK_POW arith_factor { $$ = eval_pow($1, $3); free_expr_string(&$1); free_expr_string(&$3); }
     | primary { $$ = $1; }
 ;
 
 primary:
-    TK_LPAREN expression TK_RPAREN 
-    { 
-        $$ = $2;
-        log_production("Expression: Parenthesized");
-    }
+    TK_LPAREN expression TK_RPAREN { $$ = $2; log_production("Expression: Parenthesized"); }
     | literal { $$ = $1; }
-    | TK_ID
-    {
-        $$ = handle_primary_id($1);
-    }
+    | TK_ID { $$ = handle_primary_id($1); }
 ;
 
 literal:

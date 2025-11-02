@@ -44,6 +44,16 @@ ExprResult eval_add(ExprResult a, ExprResult b) {
     ExprResult res;
     log_production("Evaluating add");
 
+    if (a.type != TYPE_STRING && !is_numeric(&a)) {
+        res.type = TYPE_VOID;
+        return res;
+    }
+
+    if (b.type != TYPE_STRING && !is_numeric(&b)) {
+        res.type = TYPE_VOID;
+        return res;
+    }
+
     if (a.type == TYPE_STRING || b.type == TYPE_STRING) {
         res.type = TYPE_STRING;
         char buffer_a[65], buffer_b[65];
@@ -80,8 +90,7 @@ ExprResult eval_add(ExprResult a, ExprResult b) {
         res.type = TYPE_INT;
         res.value.int_val = a.value.int_val + b.value.int_val;
     } else {
-        SourceLocation loc = current_location();
-        REPORT_SEMANTIC_ERROR(loc,
+        REPORT_SEMANTIC_ERROR(current_location(),
                               "Type error: invalid operands for '+' operator");
         res.type = TYPE_VOID;
     }
@@ -91,7 +100,7 @@ ExprResult eval_add(ExprResult a, ExprResult b) {
 ExprResult eval_sub(ExprResult a, ExprResult b) {
     log_production("Evaluating sub");
     ExprResult res;
-    if(!(is_numeric(&a) && is_numeric(&b))) {
+    if (!(is_numeric(&a) && is_numeric(&b))) {
         res.type = TYPE_VOID;
         return res;
     }
@@ -113,11 +122,11 @@ ExprResult eval_sub(ExprResult a, ExprResult b) {
 ExprResult eval_mul(ExprResult a, ExprResult b) {
     log_production("Evaluating mul");
     ExprResult res;
-    if(!(is_numeric(&a) && is_numeric(&b))) {
+    if (!(is_numeric(&a) && is_numeric(&b))) {
         res.type = TYPE_VOID;
         return res;
     }
-    
+
     if (a.type == TYPE_FLOAT || b.type == TYPE_FLOAT) {
         res.type = TYPE_FLOAT;
         double val_a = (a.type == TYPE_FLOAT) ? a.value.float_val
@@ -135,7 +144,7 @@ ExprResult eval_mul(ExprResult a, ExprResult b) {
 ExprResult eval_div(ExprResult a, ExprResult b) {
     log_production("Evaluating div");
     ExprResult res;
-    if(!(is_numeric(&a) && is_numeric(&b))) {
+    if (!(is_numeric(&a) && is_numeric(&b))) {
         res.type = TYPE_VOID;
         return res;
     }
@@ -173,7 +182,7 @@ ExprResult eval_div(ExprResult a, ExprResult b) {
 ExprResult eval_mod(ExprResult a, ExprResult b) {
     log_production("Evaluating mod");
     ExprResult res;
-    if(!(is_numeric(&a) && is_numeric(&b))) {
+    if (!(is_numeric(&a) && is_numeric(&b))) {
         res.type = TYPE_VOID;
         return res;
     }
@@ -209,7 +218,7 @@ ExprResult eval_mod(ExprResult a, ExprResult b) {
 ExprResult eval_pow(ExprResult a, ExprResult b) {
     log_production("Evaluating pow");
     ExprResult res;
-    if(!(is_numeric(&a) && is_numeric(&b))) {
+    if (!(is_numeric(&a) && is_numeric(&b))) {
         res.type = TYPE_VOID;
         return res;
     }
@@ -220,7 +229,7 @@ ExprResult eval_pow(ExprResult a, ExprResult b) {
 
         long long int r;
         if (exp < 0)
-            r = (long long int) pow((double)base, (double)exp);
+            r = (long long int)pow((double)base, (double)exp);
         else {
             r = 1;
             for (long long int i = 0; i < exp; i++) {
@@ -231,10 +240,11 @@ ExprResult eval_pow(ExprResult a, ExprResult b) {
         res.type = TYPE_INT;
         res.value.int_val = r;
     } else {
-        double r = pow(
-            (a.type == TYPE_FLOAT) ? a.value.float_val : (double)a.value.int_val,
-            (b.type == TYPE_FLOAT) ? b.value.float_val : (double)b.value.int_val);
-    
+        double r = pow((a.type == TYPE_FLOAT) ? a.value.float_val
+                                              : (double)a.value.int_val,
+                       (b.type == TYPE_FLOAT) ? b.value.float_val
+                                              : (double)b.value.int_val);
+
         res.type = TYPE_FLOAT;
         res.value.float_val = r;
     }
@@ -245,7 +255,7 @@ ExprResult eval_pow(ExprResult a, ExprResult b) {
 ExprResult eval_unary_minus(ExprResult a) {
     log_production("Evaluating unary minus");
     ExprResult res = a;
-    if(!is_numeric(&a)){
+    if (!is_numeric(&a)) {
         res.type = TYPE_VOID;
         return res;
     }
@@ -262,15 +272,9 @@ ExprResult eval_unary_minus(ExprResult a) {
 ExprResult eval_unary_plus(ExprResult a) {
     log_production("Evaluating unary plus");
     ExprResult res = a;
-    if(!is_numeric(&a)){
+    if (!is_numeric(&a)) {
         res.type = TYPE_VOID;
         return res;
-    }
-
-    if (a.type == TYPE_FLOAT) {
-        res.value.float_val = +a.value.float_val;
-    } else {
-        res.value.int_val = +a.value.int_val;
     }
 
     return res;
@@ -280,15 +284,17 @@ ExprResult eval_relational(ExprResult a, ExprResult b, int op) {
     log_production("Evaluating relational op");
 
     ExprResult res;
-    if(!(is_numeric(&a) && is_numeric(&b))) {
+    if (!(is_numeric(&a) && is_numeric(&b))) {
         res.type = TYPE_VOID;
         return res;
     }
 
     res.type = TYPE_BOOL;
 
-    double val_a = (a.type == TYPE_FLOAT) ? a.value.float_val : (double)a.value.int_val;
-    double val_b = (b.type == TYPE_FLOAT) ? b.value.float_val : (double)b.value.int_val;
+    double val_a =
+        (a.type == TYPE_FLOAT) ? a.value.float_val : (double)a.value.int_val;
+    double val_b =
+        (b.type == TYPE_FLOAT) ? b.value.float_val : (double)b.value.int_val;
 
     switch (op) {
         case TK_GT:
@@ -317,7 +323,7 @@ ExprResult eval_and(ExprResult a, ExprResult b) {
     log_production("Evaluating AND");
 
     ExprResult res;
-    if(!(is_boolean(&a) && is_boolean(&b))) {
+    if (!(is_boolean(&a) && is_boolean(&b))) {
         res.type = TYPE_VOID;
         return res;
     }
@@ -329,9 +335,9 @@ ExprResult eval_and(ExprResult a, ExprResult b) {
 
 ExprResult eval_or(ExprResult a, ExprResult b) {
     log_production("Evaluating OR");
-    
+
     ExprResult res;
-    if(!(is_boolean(&a) && is_boolean(&b))) {
+    if (!(is_boolean(&a) && is_boolean(&b))) {
         res.type = TYPE_VOID;
         return res;
     }
@@ -343,13 +349,13 @@ ExprResult eval_or(ExprResult a, ExprResult b) {
 
 ExprResult eval_not(ExprResult a) {
     log_production("Evaluating NOT");
-    
+
     ExprResult res;
-    if(!is_boolean(&a)) {
+    if (!is_boolean(&a)) {
         res.type = TYPE_VOID;
         return res;
     }
-    
+
     res.type = TYPE_BOOL;
     res.value.bool_val = !a.value.bool_val;
     return res;
