@@ -32,6 +32,7 @@ extern int yylineno;
     char bool_val;
 
     ExprResult expr_val;
+    //sym_value_type* struct_field;
 }
 
 /* Type Tokens */
@@ -41,23 +42,25 @@ extern int yylineno;
 %token <text> TK_ID
 
 %token <int_val> TK_INT_LIT 
-%token <float_val> TK_FLOAT_LIT 
+%token <float_val> TK_FLOAT_LIT TK_PI TK_E
 %token <text> TK_STRING_LIT
 %token <bool_val> TK_TRUE TK_FALSE
 
 /* Puntuation and Operation Tokens  */
-%token TK_ASSIGN TK_COMMA TK_NEWLINE TK_SEMICOLON
+%token TK_ASSIGN TK_COMMA TK_NEWLINE TK_SEMICOLON TK_DOT
 %token TK_PLUS TK_MINUS TK_MULT TK_DIV TK_MOD TK_POW
 %token TK_GT TK_GE TK_LT TK_LE TK_EQ TK_NE
 %token TK_NOT TK_AND TK_OR
-%token TK_LPAREN TK_RPAREN
+%token TK_LPAREN TK_RPAREN TK_LBRACE TK_RBRACE
 
+%token TK_STRUCT
 /* Functions */
 %token TK_SIN TK_COS TK_TAN TK_LEN TK_SUBSTR
 
 %type <data_type> primitive_type
 %type <id_list> id_list
-%type <expr_val> expression arith_term arith_expr arith_unit arith_factor bool_term bool_factor relational_expr primary literal
+%type <expr_val> expression arith_term arith_expr arith_unit arith_factor bool_term bool_factor relational_expr primary constant literal
+//%type <struct_field> struct_fields
 
 %define parse.error detailed
 
@@ -75,14 +78,44 @@ optional_newlines:
 ;
 declarations:
     declarations optional_newlines simple_declaration
+   // | declarations optional_newlines struct_declaration
     | simple_declaration
+    //| struct_declaration
     | declarations error TK_NEWLINE
       {
         log_production("Recovered from error declarations");
         yyerrok;
       }
 ;
+/*
+struct_declaration:
+    TK_STRUCT TK_ID TK_LBRACE struct_fields TK_RBRACE id_list TK_NEWLINE
+    {
+        handle_struct_declaration($2, $4, $6);
+    }
+;
 
+struct_fields:
+      /* vacío  { $$ = NULL; }
+    | struct_fields primitive_type TK_ID TK_SEMICOLON {
+        add_struct_field(&$1, $2, $3);
+        $$ = $1;
+    }
+    /*struct_fields primitive_type TK_ID TK_SEMICOLON 
+    { add_field($2, $3, $1); $$ = $1; }
+    | primitive_type TK_ID TK_SEMICOLON
+    { 
+        StructInstance *tmp = malloc(sizeof(StructInstance));
+        tmp->fields_count = 1;
+        tmp->fields = malloc(sizeof(STRUCT_FIELD));
+        tmp->fields[0].name = strdup($2);
+        tmp->fields[0].field = NULL; 
+        tmp->name = NULL;
+        $$ = tmp;
+        add_field($1, $2, $$);
+    }
+;
+*/
 simple_declaration: 
     primitive_type id_list TK_NEWLINE { handle_simple_declaration($1, $2); }
     | primitive_type id_list error
@@ -98,6 +131,8 @@ simple_declaration:
         yyerrok;
     }
 ;
+
+
 primitive_type:
     TK_INT      { $$ = TYPE_INT; log_production("Type: int"); }
     | TK_FLOAT  { $$ = TYPE_FLOAT; log_production("Type: float"); }
@@ -199,6 +234,7 @@ arith_factor:
 primary:
     TK_LPAREN expression TK_RPAREN { $$ = $2; log_production("Expression: Parenthesized"); }
     | literal { $$ = $1; }
+    | constant { $$ = $1; }
     | TK_ID { $$ = handle_primary_id($1); }
     | TK_SIN TK_LPAREN expression TK_RPAREN { $$ = eval_sin($3); free_expr_string(&$3); }
     | TK_COS TK_LPAREN expression TK_RPAREN { $$ = eval_cos($3); free_expr_string(&$3); }
@@ -212,18 +248,32 @@ primary:
     }
 ;
 
+constant: 
+    TK_PI
+    {
+        $$.type = TYPE_FLOAT;
+        $$.value.float_val = $1;
+        log_production("PI constant: %s (%g)", TYPE_NAME[$$.type], $1);
+    }
+    | TK_E
+    {
+        $$.type = TYPE_FLOAT;
+        $$.value.float_val = $1;
+        log_production("E constant: %s (%g)", TYPE_NAME[$$.type], $1);
+    }
+
 literal:
     TK_INT_LIT
     {
         $$.type = TYPE_INT;
         $$.value.int_val = $1;
-        log_production("Literal: %s (%d)", TYPE_NAME[$$.type], $1);
+        log_production("Literal: %s (%lld)", TYPE_NAME[$$.type], $1);
     }
     | TK_FLOAT_LIT
     {
         $$.type = TYPE_FLOAT;
         $$.value.float_val = $1;
-        log_production("Literal: %s (%f)", TYPE_NAME[$$.type], $1);
+        log_production("Literal: %s (%g)", TYPE_NAME[$$.type], $1);
     }
     | TK_STRING_LIT
     {

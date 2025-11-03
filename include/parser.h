@@ -68,35 +68,41 @@ extern int yydebug;
     TK_ID = 262,                   /* TK_ID  */
     TK_INT_LIT = 263,              /* TK_INT_LIT  */
     TK_FLOAT_LIT = 264,            /* TK_FLOAT_LIT  */
-    TK_STRING_LIT = 265,           /* TK_STRING_LIT  */
-    TK_TRUE = 266,                 /* TK_TRUE  */
-    TK_FALSE = 267,                /* TK_FALSE  */
-    TK_ASSIGN = 268,               /* TK_ASSIGN  */
-    TK_COMMA = 269,                /* TK_COMMA  */
-    TK_NEWLINE = 270,              /* TK_NEWLINE  */
-    TK_SEMICOLON = 271,            /* TK_SEMICOLON  */
-    TK_PLUS = 272,                 /* TK_PLUS  */
-    TK_MINUS = 273,                /* TK_MINUS  */
-    TK_MULT = 274,                 /* TK_MULT  */
-    TK_DIV = 275,                  /* TK_DIV  */
-    TK_MOD = 276,                  /* TK_MOD  */
-    TK_POW = 277,                  /* TK_POW  */
-    TK_GT = 278,                   /* TK_GT  */
-    TK_GE = 279,                   /* TK_GE  */
-    TK_LT = 280,                   /* TK_LT  */
-    TK_LE = 281,                   /* TK_LE  */
-    TK_EQ = 282,                   /* TK_EQ  */
-    TK_NE = 283,                   /* TK_NE  */
-    TK_NOT = 284,                  /* TK_NOT  */
-    TK_AND = 285,                  /* TK_AND  */
-    TK_OR = 286,                   /* TK_OR  */
-    TK_LPAREN = 287,               /* TK_LPAREN  */
-    TK_RPAREN = 288,               /* TK_RPAREN  */
-    TK_SIN = 289,                  /* TK_SIN  */
-    TK_COS = 290,                  /* TK_COS  */
-    TK_TAN = 291,                  /* TK_TAN  */
-    TK_LEN = 292,                  /* TK_LEN  */
-    TK_SUBSTR = 293                /* TK_SUBSTR  */
+    TK_PI = 265,                   /* TK_PI  */
+    TK_E = 266,                    /* TK_E  */
+    TK_STRING_LIT = 267,           /* TK_STRING_LIT  */
+    TK_TRUE = 268,                 /* TK_TRUE  */
+    TK_FALSE = 269,                /* TK_FALSE  */
+    TK_ASSIGN = 270,               /* TK_ASSIGN  */
+    TK_COMMA = 271,                /* TK_COMMA  */
+    TK_NEWLINE = 272,              /* TK_NEWLINE  */
+    TK_SEMICOLON = 273,            /* TK_SEMICOLON  */
+    TK_DOT = 274,                  /* TK_DOT  */
+    TK_PLUS = 275,                 /* TK_PLUS  */
+    TK_MINUS = 276,                /* TK_MINUS  */
+    TK_MULT = 277,                 /* TK_MULT  */
+    TK_DIV = 278,                  /* TK_DIV  */
+    TK_MOD = 279,                  /* TK_MOD  */
+    TK_POW = 280,                  /* TK_POW  */
+    TK_GT = 281,                   /* TK_GT  */
+    TK_GE = 282,                   /* TK_GE  */
+    TK_LT = 283,                   /* TK_LT  */
+    TK_LE = 284,                   /* TK_LE  */
+    TK_EQ = 285,                   /* TK_EQ  */
+    TK_NE = 286,                   /* TK_NE  */
+    TK_NOT = 287,                  /* TK_NOT  */
+    TK_AND = 288,                  /* TK_AND  */
+    TK_OR = 289,                   /* TK_OR  */
+    TK_LPAREN = 290,               /* TK_LPAREN  */
+    TK_RPAREN = 291,               /* TK_RPAREN  */
+    TK_LBRACE = 292,               /* TK_LBRACE  */
+    TK_RBRACE = 293,               /* TK_RBRACE  */
+    TK_STRUCT = 294,               /* TK_STRUCT  */
+    TK_SIN = 295,                  /* TK_SIN  */
+    TK_COS = 296,                  /* TK_COS  */
+    TK_TAN = 297,                  /* TK_TAN  */
+    TK_LEN = 298,                  /* TK_LEN  */
+    TK_SUBSTR = 299                /* TK_SUBSTR  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -116,8 +122,9 @@ union YYSTYPE
     char bool_val;
 
     ExprResult expr_val;
+    //sym_value_type* struct_field;
 
-#line 121 "build/parser.tab.h"
+#line 128 "build/parser.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

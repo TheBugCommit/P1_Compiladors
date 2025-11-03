@@ -4,6 +4,7 @@
 #include <string.h>
 #include <errno.h>
 #include <limits.h>
+#include <math.h>
 #include "parser.h"
 #include "data_types.h"
 #include "../src/utils/log.h"
@@ -39,7 +40,7 @@ char* unescape_string(char* s) {
 %option noinput
 %option noyywrap
 
-/* Multiline comment state */
+/* States */
 %x MULTI_COMMENT
 
 ID              [a-zA-Z_][a-zA-Z0-9_]*
@@ -82,6 +83,7 @@ UNCLOSED_STRING \"[^\n\"]*(\n|$)
 "float"     { yylval.data_type = TYPE_FLOAT; return TK_FLOAT; }
 "string"    { yylval.data_type = TYPE_STRING; return TK_STRING; }
 "bool"      { yylval.data_type = TYPE_BOOL; return TK_BOOL; }
+"struct"    { return TK_STRUCT; }
 
 %{ /* Operators and expression keywords */ %}
 
@@ -103,6 +105,8 @@ UNCLOSED_STRING \"[^\n\"]*(\n|$)
 "or"        { return TK_OR; }
 "("         { return TK_LPAREN; }
 ")"         { return TK_RPAREN; }
+"}"         { return TK_RBRACE; }
+"{"         { return TK_LBRACE; }
 
 %{ /* Functions */ %}
 
@@ -160,6 +164,12 @@ UNCLOSED_STRING \"[^\n\"]*(\n|$)
     }
 }
 
+%{ /* Constants */ %}
+
+"PI"        { yylval.float_val = M_PI; return TK_PI; }
+"E"         { yylval.float_val = exp(1.0); return TK_E; }
+
+
 %{ /* Identifiers */ %}
 
 {ID} { 
@@ -167,10 +177,10 @@ UNCLOSED_STRING \"[^\n\"]*(\n|$)
     return TK_ID; 
 }
 
-
 %{ /* Puntuation */ %}
 ","         { return TK_COMMA; }
 ";"         { return TK_SEMICOLON; }
+"."         { return TK_DOT; }
 
 {WHITESPACE}+      { }
 {RETURN}+          { return TK_NEWLINE; }
