@@ -29,18 +29,7 @@ void handle_simple_declaration(DATA_TYPE declared_type, StringListNode *list)
     string_list_free(current);
 }
 
-void handle_assigment_sentence(char *token_id, ExprResult expression)
-{
-    sym_value_type *entry = malloc(sizeof(sym_value_type));
-    int res = sym_lookup(token_id, entry);
-    if (res == SYMTAB_NOT_FOUND)
-    {
-        REPORT_SEMANTIC_ERROR(current_location(), "Assignment to undeclared identifier '%s'", token_id);
-        free_expr_string(&expression);
-        free(token_id);
-        return;
-    }
-
+int assigment_sentence(char *token_id, sym_value_type* entry, ExprResult expression) {
     if (entry->type == TYPE_FLOAT && expression.type == TYPE_INT)
     {
         expression.type = TYPE_FLOAT;
@@ -50,9 +39,7 @@ void handle_assigment_sentence(char *token_id, ExprResult expression)
     {
         REPORT_SEMANTIC_ERROR(current_location(), "Type mismatch in assignment to '%s'. Expected %s, got %s",
                               token_id, TYPE_NAME[entry->type], TYPE_NAME[expression.type]);
-        free_expr_string(&expression);
-        free(token_id);
-        return;
+        return 0;
     }
 
     if (entry->type == TYPE_STRING && entry->is_initialized)
@@ -84,6 +71,27 @@ void handle_assigment_sentence(char *token_id, ExprResult expression)
     }
 
     entry->is_initialized = 1;
+
+    return 1;
+}
+
+void handle_assigment_sentence(char *token_id, ExprResult expression)
+{
+    sym_value_type *entry = malloc(sizeof(sym_value_type));
+    int res = sym_lookup(token_id, entry);
+    if (res == SYMTAB_NOT_FOUND)
+    {
+        REPORT_SEMANTIC_ERROR(current_location(), "Assignment to undeclared identifier '%s'", token_id);
+        free_expr_string(&expression);
+        free(token_id);
+        return;
+    }
+
+    if(!assigment_sentence(token_id, entry, expression)) {
+        free_expr_string(&expression);
+        free(token_id);
+        return;
+    }
 
     res = sym_enter(token_id, entry);
     if (res == SYMTAB_DUPLICATE) {

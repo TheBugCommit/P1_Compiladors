@@ -1,6 +1,8 @@
 #include "./report.h"
-#include "globals.h"
+
 #include <stdio.h>
+
+#include "globals.h"
 
 void print_value(ExprResult e) {
     printf("Value: ");
@@ -38,6 +40,15 @@ void report_assignation(const char* token_id, ExprResult e) {
     if (e.type == TYPE_VOID) return;
 
     printf("ASSIGNATION => Name: %s, Type: %s, ", token_id, TYPE_NAME[e.type]);
+    print_value(e);
+    printf("\n");
+}
+
+void report_struct_member_assigment(StructAccessData struct_acces_data,
+                                    ExprResult e) {
+    if (e.type == TYPE_VOID) return;
+
+    printf("ASSIGNATION => Name: %s.%s, Type: %s, ", struct_acces_data.instance_id, struct_acces_data.field_id, TYPE_NAME[e.type]);
     print_value(e);
     printf("\n");
 }

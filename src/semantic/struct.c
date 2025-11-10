@@ -7,6 +7,7 @@
 #include "../symtab/symtab.h"
 #include "../utils/error.h"
 #include "../utils/log.h"
+#include "./handler.h"
 #include "globals.h"
 
 StructFieldListNode* struct_field_list_append(StructFieldListNode* field_list,
@@ -164,7 +165,7 @@ void handle_struct_instances(char* struct_id, StringListNode* id_list) {
 }
 
 int handle_struct_declaration(char* struct_id,
-                               StructFieldListNode* field_list) {
+                              StructFieldListNode* field_list) {
     if (struct_id == NULL || field_list == NULL) {
         return 0;
     }
@@ -198,8 +199,9 @@ int handle_struct_declaration(char* struct_id,
 
     int result = sym_add(inst->name, new_entry);
     if (result != SYMTAB_OK) {
-        report_error(ERROR_LEVEL_FATAL, COMPILER_SUCCESS, current_location(),
-                     "SYMTAB ERROR", "Error adding struct '%s' to symtab");
+        report_error(ERROR_LEVEL_FATAL, COMPILER_ERROR_MEMORY,
+                     current_location(), "SYMTAB ERROR",
+                     "Error adding struct '%s' to symtab", struct_id);
         return 0;
     }
 
@@ -207,6 +209,52 @@ int handle_struct_declaration(char* struct_id,
                    TYPE_NAME[TYPE_STRUCT]);
 
     return 1;
+}
+
+void handle_struct_member_assigment(StructAccessData struct_access_data,
+                                    ExprResult e) {
+    sym_value_type* entry = (sym_value_type*)malloc(sizeof(sym_value_type));
+    int res = sym_lookup(struct_access_data.instance_id, entry);
+    if (res != SYMTAB_OK) {
+        REPORT_SEMANTIC_ERROR(current_location(), "Identifyer '%s' not found",
+                              struct_access_data.instance_id);
+        free(struct_access_data.instance_id);
+        free(struct_access_data.field_id);
+        free_expr_string(&e);
+        return;
+    }
+
+    StructFieldListNode* fields = entry->value.struct_val->fields;
+    char found = 0;
+    while (fields != NULL && !found) {
+        if (strcmp(fields->field.id, struct_access_data.field_id) == 0) {
+            found = 1;
+            if (!assigment_sentence(struct_access_data.field_id,
+                                    &(fields->field.data), e)) {
+                free_expr_string(&e);
+                free(entry);
+                free(struct_access_data.instance_id);
+                free(struct_access_data.field_id);
+                return;
+            }
+
+            log_production("Assignment to struct member '%s.%s' successful", 
+                            struct_access_data.instance_id, struct_access_data.field_id);
+        } else {
+            fields = fields->next;
+        }
+    }
+
+    if (!found) {
+        REPORT_SEMANTIC_ERROR(
+            current_location(), "Field '%s' in '%s' not found",
+            struct_access_data.field_id, struct_access_data.instance_id);
+    }
+
+    free(entry);
+    free(struct_access_data.instance_id);
+    free(struct_access_data.field_id);
+    free_expr_string(&e);
 }
 
 void struct_field_free(StructField* field) {

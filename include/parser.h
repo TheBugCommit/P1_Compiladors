@@ -123,8 +123,9 @@ union YYSTYPE
 
     ExprResult expr_val;
     StructFieldListNode* struct_field_list;
+    StructAccessData struct_access_data;
 
-#line 128 "build/parser.tab.h"
+#line 129 "build/parser.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

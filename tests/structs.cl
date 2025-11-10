@@ -13,3 +13,5 @@ struct Punt2 {
     int x, a, d; 
     int v, a;
         } p3
+
+p1.x := 1

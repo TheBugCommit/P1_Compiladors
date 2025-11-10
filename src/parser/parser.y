@@ -35,6 +35,7 @@ extern int yylineno;
 
     ExprResult expr_val;
     StructFieldListNode* struct_field_list;
+    StructAccessData struct_access_data;
 }
 
 /* Type Tokens */
@@ -63,6 +64,7 @@ extern int yylineno;
 %type <id_list> id_list
 %type <expr_val> expression arith_term arith_expr unary_expr arith_factor bool_term bool_factor relational_expr primary constant literal
 %type <struct_field_list> struct_fields
+%type <struct_access_data> struct_member_access
 
 %define parse.error detailed
 
@@ -126,6 +128,15 @@ primitive_type:
     | TK_BOOL   { $$ = TYPE_BOOL; log_production("Type: bool"); }
 ;
 
+struct_member_access: 
+    TK_ID TK_DOT TK_ID 
+    {
+        $$.instance_id = $1;
+        $$.field_id = $3;
+        log_production("Struct member access: %s.%s", $1, $3);
+    }
+;
+
 id_list:
     TK_ID { $$ = string_list_append(NULL, $1); }
     | id_list TK_COMMA TK_ID { $$ = string_list_append($1, $3); }
@@ -150,6 +161,11 @@ assignment_sentence:
     TK_ID TK_ASSIGN expression {
         report_assignation($1, $3);
         handle_assigment_sentence($1, $3);
+    }
+    | struct_member_access TK_ASSIGN expression 
+    {
+        report_struct_member_assigment($1, $3); 
+        handle_struct_member_assigment($1, $3);
     }
 ;
 
@@ -223,6 +239,7 @@ primary:
     | literal { $$ = $1; }
     | constant { $$ = $1; }
     | TK_ID { $$ = handle_primary_id($1); }
+    | struct_member_access { /*$$ = handle_struct_member_access_value($1.instance_id, $1.field_id);*/ }
     | TK_SIN TK_LPAREN expression TK_RPAREN { $$ = eval_sin($3); free_expr_string(&$3); }
     | TK_COS TK_LPAREN expression TK_RPAREN { $$ = eval_cos($3); free_expr_string(&$3); }
     | TK_TAN TK_LPAREN expression TK_RPAREN { $$ = eval_tan($3); free_expr_string(&$3); }
