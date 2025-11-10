@@ -238,8 +238,9 @@ void handle_struct_member_assigment(StructAccessData struct_access_data,
                 return;
             }
 
-            log_production("Assignment to struct member '%s.%s' successful", 
-                            struct_access_data.instance_id, struct_access_data.field_id);
+            log_production("Assignment to struct member '%s.%s' successful",
+                           struct_access_data.instance_id,
+                           struct_access_data.field_id);
         } else {
             fields = fields->next;
         }
@@ -255,6 +256,61 @@ void handle_struct_member_assigment(StructAccessData struct_access_data,
     free(struct_access_data.instance_id);
     free(struct_access_data.field_id);
     free_expr_string(&e);
+}
+
+ExprResult handle_struct_member_access_value(
+    StructAccessData struct_access_data) {
+    ExprResult e;
+    e.type = TYPE_VOID;
+
+    sym_value_type* entry = (sym_value_type*)malloc(sizeof(sym_value_type));
+    int res = sym_lookup(struct_access_data.instance_id, entry);
+    if (res != SYMTAB_OK) {
+        REPORT_SEMANTIC_ERROR(current_location(), "Identifyer '%s' not found",
+                              struct_access_data.instance_id);
+        free(struct_access_data.instance_id);
+        free(struct_access_data.field_id);
+        return e;
+    }
+
+    StructFieldListNode* fields = entry->value.struct_val->fields;
+    char found = 0;
+    while (fields != NULL && !found) {
+        if (strcmp(fields->field.id, struct_access_data.field_id) == 0) {
+            found = 1;
+
+            if (!fields->field.data.is_initialized) {
+                REPORT_SEMANTIC_ERROR(current_location(),
+                                      "Field '%s.%s' not inicialitzed",
+                                      struct_access_data.instance_id,
+                                      struct_access_data.field_id);
+                free(struct_access_data.instance_id);
+                free(struct_access_data.field_id);
+                free(entry);
+                return e;
+            }
+
+            e.type = fields->field.data.type;
+            e.value = fields->field.data.value;
+            if(e.type == TYPE_STRING) {
+                e.value.string_val = strdup(fields->field.data.value.string_val);
+            }
+        } else {
+            fields = fields->next;
+        }
+    }
+
+    if (!found) {
+        REPORT_SEMANTIC_ERROR(
+            current_location(), "Field '%s' in '%s' not found",
+            struct_access_data.field_id, struct_access_data.instance_id);
+    }
+
+    free(entry);
+    free(struct_access_data.instance_id);
+    free(struct_access_data.field_id);
+
+    return e;
 }
 
 void struct_field_free(StructField* field) {

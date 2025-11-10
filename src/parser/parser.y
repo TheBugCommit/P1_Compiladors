@@ -239,7 +239,7 @@ primary:
     | literal { $$ = $1; }
     | constant { $$ = $1; }
     | TK_ID { $$ = handle_primary_id($1); }
-    | struct_member_access { /*$$ = handle_struct_member_access_value($1.instance_id, $1.field_id);*/ }
+    | struct_member_access { $$ = handle_struct_member_access_value($1); }
     | TK_SIN TK_LPAREN expression TK_RPAREN { $$ = eval_sin($3); free_expr_string(&$3); }
     | TK_COS TK_LPAREN expression TK_RPAREN { $$ = eval_cos($3); free_expr_string(&$3); }
     | TK_TAN TK_LPAREN expression TK_RPAREN { $$ = eval_tan($3); free_expr_string(&$3); }
