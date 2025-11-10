@@ -94,7 +94,8 @@ struct_declaration:
     TK_STRUCT TK_ID TK_LBRACE struct_fields TK_RBRACE id_list TK_NEWLINE
     {
         log_production("struct decalration %s", $2);
-        //handle_struct_declaration($2, $4, $6);
+        handle_struct_declaration($2, $4);
+        handle_struct_instance($2, $6);
     }
 ;
 
@@ -102,7 +103,7 @@ struct_fields:
     primitive_type id_list TK_SEMICOLON 
     { 
         log_production("struct_fields_create");
-        $$= struct_field_list_append(NULL, $1, $2); // TODO: solve correct pointer free
+        $$= struct_field_list_append(NULL, $1, $2);
     }
     | struct_fields primitive_type id_list TK_SEMICOLON  
     {

@@ -18,7 +18,7 @@ StructFieldListNode* struct_field_list_append(StructFieldListNode* field_list,
         return field_list;
     }
 
-    StructFieldListNode* new_list = field_list;
+    StructFieldListNode* list = field_list;
     StringListNode* current_id = id_list;
     while (current_id != NULL) {
         StructFieldListNode* node = malloc(sizeof(StructFieldListNode));
@@ -36,24 +36,24 @@ StructFieldListNode* struct_field_list_append(StructFieldListNode* field_list,
                        current_id->id, TYPE_NAME[type]);
 
         node->field = sf;
-        node->next = new_list;
-        new_list = node;
+        node->next = list;
+        list = node;
 
         current_id = current_id->next;
     }
 
     string_list_free(id_list);
 
-    return new_list;
+    return list;
 }
 
 int struct_field_duplicates(const char* struct_id,
                             const StructFieldListNode* list) {
     int duplicates = 0;
 
-    StructFieldListNode* outer = list;
+    const StructFieldListNode* outer = list;
     while (outer != NULL) {
-        StructFieldListNode* inner = outer->next;
+        const StructFieldListNode* inner = outer->next;
         while (inner != NULL) {
             if (strcmp(outer->field.id, inner->field.id) == 0) {
                 REPORT_SEMANTIC_ERROR(
@@ -70,29 +70,6 @@ int struct_field_duplicates(const char* struct_id,
     return duplicates;
 }
 
-void struct_field_list_free(StructFieldListNode *list) {
-    while (list != NULL) {
-        StructFieldListNode *next = list->next;
-
-        // Liberar el id del campo
-        if (list->field.id != NULL) {
-            free(list->field.id);
-        }
-
-        // Si quieres liberar data.string_val dentro de sym_value_type
-        if (list->field.data.type == TYPE_STRING && list->field.data.value.string_val != NULL) {
-            free(list->field.data.value.string_val);
-        }
-
-        // No free de data.struct_val porque estamos compartiendo la lista de campos
-        // y cada instancia del struct gestiona su propio struct_val
-
-        free(list);
-        list = next;
-    }
-}
-
-
 StructFieldListNode* struct_field_list_copy(const StructFieldListNode* list) {
     if (!list) return NULL;
 
@@ -102,12 +79,13 @@ StructFieldListNode* struct_field_list_copy(const StructFieldListNode* list) {
     const StructFieldListNode* current = list;
     while (current != NULL) {
         StructFieldListNode* node = malloc(sizeof(StructFieldListNode));
-
-        node->field.id = strdup(current->field.id);
+        
         node->field.data = current->field.data; 
+        node->field.id = strdup(current->field.id);
 
-        if(current->field.data.value.string_val != NULL)
+        if (node->field.data.type == TYPE_STRING && current->field.data.value.string_val != NULL) {
             node->field.data.value.string_val = strdup(current->field.data.value.string_val);
+        }
         
         node->next = NULL;
 
@@ -125,56 +103,102 @@ StructFieldListNode* struct_field_list_copy(const StructFieldListNode* list) {
     return copy_head;
 }
 
-void handle_struct_declaration(char* struct_id, StructFieldListNode* field_list,
-                               StringListNode* id_list) {
+StructInstance* struct_instance_copy(const StructInstance* instance){
+    if (instance == NULL) {
+        return NULL;
+    }
+
+    StructInstance* new_inst = (StructInstance*)malloc(sizeof(StructInstance));
+    if (new_inst == NULL) {
+        return NULL; 
+    }
+
+    new_inst->name = strdup(instance->name);
+    new_inst->fields = struct_field_list_copy(instance->fields); 
+
+    return new_inst;
+}
+
+void handle_struct_instance(char* struct_id, StringListNode* id_list) {}
+
+void handle_struct_declaration(char* struct_id,
+                               StructFieldListNode* field_list) {
+    if (struct_id == NULL || field_list == NULL) {
+        return;
+    }
+
     if (struct_field_duplicates(struct_id, field_list)) {
         log_production("dup");
+
         struct_field_list_free(field_list);
-        string_list_free(id_list);
         free(struct_id);
         return;
     }
 
-    int res = sym_add(strdup(struct_id), NULL);
-    if (res == SYMTAB_DUPLICATE) {
+    sym_value_type* entry = (sym_value_type*) malloc(sizeof(sym_value_type));
+    int res = sym_lookup(struct_id, entry);
+    if (res == SYMTAB_OK) {
         REPORT_SEMANTIC_ERROR(current_location(),
                               "Struct '%s' already declared", struct_id);
         struct_field_list_free(field_list);
-        string_list_free(id_list);
         free(struct_id);
         return;
     }
 
-    log_production("registered");
+    sym_value_type* new_entry = (sym_value_type*)malloc(sizeof(sym_value_type));
+    StructInstance* inst = (StructInstance*)malloc(sizeof(StructInstance));
 
-    sym_value_type* new_entry = malloc(sizeof(sym_value_type));
-    StringListNode* current = id_list;
-    while (current != NULL) {
-        StructInstance* inst = (StructInstance*)malloc(sizeof(StructInstance));
-        inst->name = strdup(struct_id);
-        inst->fields = field_list; //copia 
+    inst->name = strdup(struct_id);
+    inst->fields = field_list;
 
-        new_entry->type = TYPE_STRUCT;
-        new_entry->is_initialized = 1;
-        new_entry->value.struct_val = inst;
+    new_entry->type = TYPE_STRUCT;
+    new_entry->is_initialized = 1;
+    new_entry->value.struct_val = inst;
 
-        int result = sym_add(current->id, new_entry);
-        if (result == SYMTAB_DUPLICATE) {
-            REPORT_SEMANTIC_ERROR(
-                current_location(),
-                "On Struct '%s', identifier '%s' already declared", struct_id,
-                current->id);
-
-            //free_struct_instance(inst);
-            free(new_entry);
-        }
-
-        current = current->next;
+    int result = sym_add(inst->name, new_entry);
+    if (result != SYMTAB_OK) {
+        report_error(ERROR_LEVEL_FATAL, COMPILER_SUCCESS, current_location(),
+                     "SYMTAB ERROR", "Error adding struct '%s' to symtab");
+        exit(1);
     }
 
     log_production("Declared struct: '%s' (Type: %s)", struct_id,
                    TYPE_NAME[TYPE_STRUCT]);
 
-    string_list_free(id_list);
     free(struct_id);
+}
+
+void struct_field_free(StructField* field) {
+    if (!field) return;
+
+    if (field->id) {
+        free(field->id);
+        field->id = NULL;
+    }
+
+    value_union_free(field->data.type, &field->data.value);
+}
+
+void struct_field_list_free(StructFieldListNode* list) {
+    StructFieldListNode* curr = list;
+    while (curr) {
+        StructFieldListNode* next = curr->next;
+        struct_field_free(&curr->field);
+        free(curr);
+        curr = next;
+    }
+}
+
+void struct_instance_free(StructInstance* instance) {
+    if (!instance) return;
+
+    if (instance->name) {
+        free(instance->name);
+        instance->name = NULL;
+    }
+
+    struct_field_list_free(instance->fields);
+    instance->fields = NULL;
+
+    free(instance);
 }
