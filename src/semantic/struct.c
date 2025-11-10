@@ -79,14 +79,16 @@ StructFieldListNode* struct_field_list_copy(const StructFieldListNode* list) {
     const StructFieldListNode* current = list;
     while (current != NULL) {
         StructFieldListNode* node = malloc(sizeof(StructFieldListNode));
-        
-        node->field.data = current->field.data; 
+
+        node->field.data = current->field.data;
         node->field.id = strdup(current->field.id);
 
-        if (node->field.data.type == TYPE_STRING && current->field.data.value.string_val != NULL) {
-            node->field.data.value.string_val = strdup(current->field.data.value.string_val);
+        if (node->field.data.type == TYPE_STRING &&
+            current->field.data.value.string_val != NULL) {
+            node->field.data.value.string_val =
+                strdup(current->field.data.value.string_val);
         }
-        
+
         node->next = NULL;
 
         if (!copy_head) {
@@ -103,46 +105,85 @@ StructFieldListNode* struct_field_list_copy(const StructFieldListNode* list) {
     return copy_head;
 }
 
-StructInstance* struct_instance_copy(const StructInstance* instance){
+StructInstance* struct_instance_copy(const StructInstance* instance) {
     if (instance == NULL) {
         return NULL;
     }
 
     StructInstance* new_inst = (StructInstance*)malloc(sizeof(StructInstance));
     if (new_inst == NULL) {
-        return NULL; 
+        return NULL;
     }
 
     new_inst->name = strdup(instance->name);
-    new_inst->fields = struct_field_list_copy(instance->fields); 
+    new_inst->fields = struct_field_list_copy(instance->fields);
 
     return new_inst;
 }
 
-void handle_struct_instance(char* struct_id, StringListNode* id_list) {}
+void handle_struct_instances(char* struct_id, StringListNode* id_list) {
+    if (struct_id == NULL || id_list == NULL) {
+        return;
+    }
 
-void handle_struct_declaration(char* struct_id,
+    sym_value_type* entry = (sym_value_type*)malloc(sizeof(sym_value_type));
+    int res = sym_lookup(struct_id, entry);
+    if (res != SYMTAB_OK) {
+        REPORT_SEMANTIC_ERROR(current_location(), "Struct '%s' not found",
+                              struct_id);
+        string_list_free(id_list);
+        free(struct_id);
+        struct_id = NULL;
+        id_list = NULL;
+        return;
+    }
+
+    StringListNode* current = id_list;
+    while (current != NULL) {
+        sym_value_type* new_entry =
+            (sym_value_type*)malloc(sizeof(sym_value_type));
+        new_entry->is_initialized = entry->is_initialized;
+        new_entry->type = entry->type;
+        new_entry->value.struct_val =
+            struct_instance_copy(entry->value.struct_val);
+
+        int res = sym_add(strdup(current->id), new_entry);
+        if (res == SYMTAB_DUPLICATE) {
+            REPORT_SEMANTIC_ERROR(current_location(),
+                                  "Identifyer '%s', already defined",
+                                  current->id);
+            struct_instance_free(new_entry->value.struct_val);
+            free(new_entry);
+        }
+
+        current = current->next;
+    }
+
+    string_list_free(id_list);
+    free(struct_id);
+}
+
+int handle_struct_declaration(char* struct_id,
                                StructFieldListNode* field_list) {
     if (struct_id == NULL || field_list == NULL) {
-        return;
+        return 0;
     }
 
     if (struct_field_duplicates(struct_id, field_list)) {
         log_production("dup");
 
         struct_field_list_free(field_list);
-        free(struct_id);
-        return;
+        field_list = NULL;
+        return 0;
     }
 
-    sym_value_type* entry = (sym_value_type*) malloc(sizeof(sym_value_type));
+    sym_value_type* entry = (sym_value_type*)malloc(sizeof(sym_value_type));
     int res = sym_lookup(struct_id, entry);
     if (res == SYMTAB_OK) {
         REPORT_SEMANTIC_ERROR(current_location(),
                               "Struct '%s' already declared", struct_id);
         struct_field_list_free(field_list);
-        free(struct_id);
-        return;
+        return 0;
     }
 
     sym_value_type* new_entry = (sym_value_type*)malloc(sizeof(sym_value_type));
@@ -159,13 +200,13 @@ void handle_struct_declaration(char* struct_id,
     if (result != SYMTAB_OK) {
         report_error(ERROR_LEVEL_FATAL, COMPILER_SUCCESS, current_location(),
                      "SYMTAB ERROR", "Error adding struct '%s' to symtab");
-        exit(1);
+        return 0;
     }
 
     log_production("Declared struct: '%s' (Type: %s)", struct_id,
                    TYPE_NAME[TYPE_STRUCT]);
 
-    free(struct_id);
+    return 1;
 }
 
 void struct_field_free(StructField* field) {

@@ -2,7 +2,7 @@
 struct Punt { 
     int x; 
     int v;
-        } p1
+        } p1, p2,   p5
 
 struct Punt { 
     int x; 
@@ -13,4 +13,3 @@ struct Punt2 {
     int x, a, d; 
     int v, a;
         } p3
-        

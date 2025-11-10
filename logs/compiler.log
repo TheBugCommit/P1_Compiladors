@@ -1,28 +1,19 @@
 --- START OF ANALYSIS ---
 [PROD] Type: int
-[PROD] struct_fields_create
 [PROD] Declared struct identifier: 'x' (Type: INT)
 [PROD] Type: int
-[PROD] struct_fields
 [PROD] Declared struct identifier: 'v' (Type: INT)
-[PROD] struct decalration Punt
 [PROD] Declared struct: 'Punt' (Type: STRUCT)
 [PROD] Type: int
-[PROD] struct_fields_create
 [PROD] Declared struct identifier: 'x' (Type: INT)
 [PROD] Type: int
-[PROD] struct_fields
 [PROD] Declared struct identifier: 'v' (Type: INT)
-[PROD] struct decalration Punt
 [PROD] Type: int
-[PROD] struct_fields_create
 [PROD] Declared struct identifier: 'd' (Type: INT)
 [PROD] Declared struct identifier: 'a' (Type: INT)
 [PROD] Declared struct identifier: 'x' (Type: INT)
 [PROD] Type: int
-[PROD] struct_fields
 [PROD] Declared struct identifier: 'a' (Type: INT)
 [PROD] Declared struct identifier: 'v' (Type: INT)
-[PROD] struct decalration Punt2
 [PROD] dup
 --- END OF ANALYSIS ---
