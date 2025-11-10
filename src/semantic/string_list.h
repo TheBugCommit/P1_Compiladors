@@ -7,6 +7,7 @@ typedef struct StringListNode {
 } StringListNode;
 
 StringListNode* string_list_append(StringListNode *list, char *id);
+int string_list_check_duplicates(const StringListNode *list);
 void string_list_free(StringListNode *list);
 
 #endif

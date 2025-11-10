@@ -52,9 +52,8 @@ void report_error(ErrorLevel level, CompilerResult code,
 
 void yyerror(const char *s) {
     SourceLocation loc = current_location();
-
     if (strstr(s, "syntax error")) {
-        REPORT_SYNTAX_ERROR(loc, "Syntax Error: incorrect strocture");
+        REPORT_SYNTAX_ERROR(loc, "Syntax Error: incorrect strocture -> %s", s);
     } else if (strstr(s, "unexpected")) {
         REPORT_SYNTAX_ERROR(loc, "Unexpected Token");
     } else {

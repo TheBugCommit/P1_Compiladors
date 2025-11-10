@@ -42,9 +42,10 @@ char* unescape_string(char* s) {
 
 /* States */
 %x MULTI_COMMENT
+%x IN_BLOCK
 
 ID              [a-zA-Z_][a-zA-Z0-9_]*
-WHITESPACE      [ \t\r]
+WHITESPACE      [ \t]
 RETURN          [\n]
 COMMENT         (\/\/|#)
 DIGIT           [0-9]
@@ -77,13 +78,37 @@ UNCLOSED_STRING \"[^\n\"]*(\n|$)
 {COMMENT}[^\n]*     { log_production("Skipped comment until EOL"); }
 {COMMENT}[^\n]*\n   { log_production("Skipped full comment line"); }
 
+"{" {
+    BEGIN(IN_BLOCK);       
+    return TK_LBRACE;
+}
+<IN_BLOCK>"}" {
+    BEGIN(INITIAL);          
+    return TK_RBRACE;
+}
+<IN_BLOCK>\n      { }
+<IN_BLOCK>[ \t]+  { }
+
+<IN_BLOCK>"int"      { yylval.data_type = TYPE_INT; return TK_INT; }
+<IN_BLOCK>"float"    { yylval.data_type = TYPE_FLOAT; return TK_FLOAT; }
+<IN_BLOCK>"string"   { yylval.data_type = TYPE_STRING; return TK_STRING; }
+<IN_BLOCK>"bool"     { yylval.data_type = TYPE_BOOL; return TK_BOOL; }
+<IN_BLOCK>{ID}       { yylval.text = strdup(yytext); return TK_ID; }
+<IN_BLOCK>";"        { return TK_SEMICOLON; }
+<IN_BLOCK>","        { return TK_COMMA; }
+<IN_BLOCK>"."        { return TK_DOT; }
+<IN_BLOCK>.          {
+    SourceLocation loc = current_location();
+    REPORT_LEXICAL_ERROR(loc, "Invalid character inside block: '%s'", yytext);
+}
+
 %{ /* Types */ %}
 
 "int"       { yylval.data_type = TYPE_INT; return TK_INT; }
 "float"     { yylval.data_type = TYPE_FLOAT; return TK_FLOAT; }
 "string"    { yylval.data_type = TYPE_STRING; return TK_STRING; }
 "bool"      { yylval.data_type = TYPE_BOOL; return TK_BOOL; }
-"struct"    { return TK_STRUCT; }
+"struct"    { yylval.data_type = TYPE_STRUCT; return TK_STRUCT; }
 
 %{ /* Operators and expression keywords */ %}
 
@@ -105,8 +130,6 @@ UNCLOSED_STRING \"[^\n\"]*(\n|$)
 "or"        { return TK_OR; }
 "("         { return TK_LPAREN; }
 ")"         { return TK_RPAREN; }
-"}"         { return TK_RBRACE; }
-"{"         { return TK_LBRACE; }
 
 %{ /* Functions */ %}
 

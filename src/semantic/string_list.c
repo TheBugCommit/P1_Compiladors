@@ -17,3 +17,17 @@ void string_list_free(StringListNode *list) {
         free(tmp);
     }
 }
+int string_list_check_duplicates(const StringListNode *list) {
+    const StringListNode *outer = list;
+    while (outer != NULL) {
+        const StringListNode *inner = outer->next;
+        while (inner != NULL) {
+            if (strcmp(outer->id, inner->id) == 0) {
+                return 1;
+            }
+            inner = inner->next;
+        }
+        outer = outer->next;
+    }
+    return 0;  
+}

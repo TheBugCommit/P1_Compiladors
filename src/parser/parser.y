@@ -11,6 +11,8 @@
 #include "../src/semantic/handler.h"
 #include "../src/semantic/expression.h"
 #include "../src/semantic/function.h"
+#include "../src/semantic/struct.h"
+
 
 extern int yylex();
 extern int yylineno;
@@ -32,7 +34,7 @@ extern int yylineno;
     char bool_val;
 
     ExprResult expr_val;
-    //sym_value_type* struct_field;
+    StructFieldListNode* struct_field_list;
 }
 
 /* Type Tokens */
@@ -59,8 +61,8 @@ extern int yylineno;
 
 %type <data_type> primitive_type
 %type <id_list> id_list
-%type <expr_val> expression arith_term arith_expr arith_unit arith_factor bool_term bool_factor relational_expr primary constant literal
-//%type <struct_field> struct_fields
+%type <expr_val> expression arith_term arith_expr unary_expr arith_factor bool_term bool_factor relational_expr primary constant literal
+%type <struct_field_list> struct_fields
 
 %define parse.error detailed
 
@@ -76,46 +78,39 @@ optional_newlines:
     /* void */
     | optional_newlines TK_NEWLINE
 ;
+
 declarations:
     declarations optional_newlines simple_declaration
-   // | declarations optional_newlines struct_declaration
+    | declarations optional_newlines struct_declaration
     | simple_declaration
-    //| struct_declaration
+    | struct_declaration
     | declarations error TK_NEWLINE
       {
         log_production("Recovered from error declarations");
         yyerrok;
       }
 ;
-/*
 struct_declaration:
     TK_STRUCT TK_ID TK_LBRACE struct_fields TK_RBRACE id_list TK_NEWLINE
     {
-        handle_struct_declaration($2, $4, $6);
+        log_production("struct decalration %s", $2);
+        //handle_struct_declaration($2, $4, $6);
     }
 ;
 
 struct_fields:
-      /* vacío  { $$ = NULL; }
-    | struct_fields primitive_type TK_ID TK_SEMICOLON {
-        add_struct_field(&$1, $2, $3);
-        $$ = $1;
-    }
-    /*struct_fields primitive_type TK_ID TK_SEMICOLON 
-    { add_field($2, $3, $1); $$ = $1; }
-    | primitive_type TK_ID TK_SEMICOLON
+    primitive_type id_list TK_SEMICOLON 
     { 
-        StructInstance *tmp = malloc(sizeof(StructInstance));
-        tmp->fields_count = 1;
-        tmp->fields = malloc(sizeof(STRUCT_FIELD));
-        tmp->fields[0].name = strdup($2);
-        tmp->fields[0].field = NULL; 
-        tmp->name = NULL;
-        $$ = tmp;
-        add_field($1, $2, $$);
+        log_production("struct_fields_create");
+        $$= struct_field_list_append(NULL, $1, $2); // TODO: solve correct pointer free
+    }
+    | struct_fields primitive_type id_list TK_SEMICOLON  
+    {
+        log_production("struct_fields");
+        $$ = struct_field_list_append($1, $2, $3);
     }
 ;
-*/
+
 simple_declaration: 
     primitive_type id_list TK_NEWLINE { handle_simple_declaration($1, $2); }
     | primitive_type id_list error
@@ -206,23 +201,24 @@ relational_expr:
 
 /* Nivel 5: Suma, Resta, Unario +/- */
 arith_expr:
-    arith_expr TK_PLUS arith_term    { $$ = eval_add($1, $3); free_expr_string(&$1); free_expr_string(&$3); }
-  | arith_expr TK_MINUS arith_term   { $$ = eval_sub($1, $3); free_expr_string(&$1); free_expr_string(&$3); }
-  | arith_term                       { $$ = $1; }
+    arith_expr TK_PLUS unary_expr    { $$ = eval_add($1, $3); free_expr_string(&$1); free_expr_string(&$3); }
+  | arith_expr TK_MINUS unary_expr   { $$ = eval_sub($1, $3); free_expr_string(&$1); free_expr_string(&$3); }
+  | unary_expr                       { $$ = $1; }
+;
+
+/* Nivel 5.5: UNARIS */
+unary_expr:
+    TK_PLUS unary_expr  { $$ = eval_unary_plus($2); free_expr_string(&$2); }
+  | TK_MINUS unary_expr { $$ = eval_unary_minus($2); free_expr_string(&$2); }
+  | arith_term          { $$ = $1; }
 ;
 
 /* Nivel 6: *, /, % */
 arith_term:
-    arith_term TK_MULT arith_unit { $$ = eval_mul($1, $3); free_expr_string(&$1); free_expr_string(&$3); }
-  | arith_term TK_DIV arith_unit  { $$ = eval_div($1, $3); free_expr_string(&$1); free_expr_string(&$3); }
-  | arith_term TK_MOD arith_unit  { $$ = eval_mod($1, $3); free_expr_string(&$1); free_expr_string(&$3); }
-  | arith_unit                    { $$ = $1; }
-;
-
-arith_unit:
-    TK_PLUS arith_unit    { $$ = eval_unary_plus($2); free_expr_string(&$2); }
-  | TK_MINUS arith_unit   { $$ = eval_unary_minus($2); free_expr_string(&$2); }
-  | arith_factor          { $$ = $1; }
+    arith_term TK_MULT arith_factor { $$ = eval_mul($1, $3); free_expr_string(&$1); free_expr_string(&$3); }
+  | arith_term TK_DIV arith_factor  { $$ = eval_div($1, $3); free_expr_string(&$1); free_expr_string(&$3); }
+  | arith_term TK_MOD arith_factor  { $$ = eval_mod($1, $3); free_expr_string(&$1); free_expr_string(&$3); }
+  | arith_factor                    { $$ = $1; }
 ;
 
 /* Nivel 7: Potencia (**) (Asociativa por la derecha) */

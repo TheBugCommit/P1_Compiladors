@@ -13,11 +13,11 @@ void handle_simple_declaration(DATA_TYPE declared_type, StringListNode *list)
 
     while (current != NULL)
     {
-        sym_value_type new_entry;
-        new_entry.type = declared_type;
-        new_entry.is_initialized = 0;
+        sym_value_type *new_entry = malloc(sizeof(sym_value_type));
+        new_entry->type = declared_type;
+        new_entry->is_initialized = 0;
 
-        int result = sym_add(current->id, &new_entry);
+        int result = sym_add(current->id, new_entry);
         if (result == SYMTAB_DUPLICATE)
             REPORT_SEMANTIC_ERROR(current_location(), "Identifier '%s' already declared", current->id);
 

@@ -45,7 +45,7 @@
 extern int yydebug;
 #endif
 /* "%code requires" blocks.  */
-#line 20 "src/parser/parser.y"
+#line 22 "src/parser/parser.y"
 
   #include "data_types.h"
   #include "../src/semantic/string_list.h"
@@ -111,7 +111,7 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 25 "src/parser/parser.y"
+#line 27 "src/parser/parser.y"
 
     char *text;
     DATA_TYPE data_type;
@@ -122,7 +122,7 @@ union YYSTYPE
     char bool_val;
 
     ExprResult expr_val;
-    //sym_value_type* struct_field;
+    StructFieldListNode* struct_field_list;
 
 #line 128 "build/parser.tab.h"
 

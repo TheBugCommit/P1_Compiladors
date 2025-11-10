@@ -1,20 +1,9 @@
 --- START OF ANALYSIS ---
-[PROD] Type: float
-[PROD] Declared identifier: 'a' (Type: FLOAT)
-[PROD] Type: float
-[PROD] Declared identifier: 'b' (Type: FLOAT)
-[PROD] E constant: FLOAT (2.71828)
-[PROD] Assignment: 'a' = 2.71828 [Type: FLOAT]
-[PROD] Symbtab updated
-[PROD] PI constant: FLOAT (3.14159)
-[PROD] Assignment: 'b' = 3.14159 [Type: FLOAT]
-[PROD] Symbtab updated
-[PROD] Expression: Identifier 'a'
-[PROD] Expression: Identifier 'b'
-[PROD] Expression: Identifier 'a'
-[PROD] Expression: Identifier 'b'
-[PROD] Evaluating add
-[PROD] E constant: FLOAT (2.71828)
-[PROD] PI constant: FLOAT (3.14159)
-[PROD] Evaluating add
+[PROD] Type: int
+[PROD] struct_fields_create
+[PROD] Declared struct identifier: 'x' (Type: INT)
+[PROD] Type: int
+[PROD] struct_fields
+[PROD] Declared struct identifier: 'v' (Type: INT)
+[PROD] struct decalration Punt
 --- END OF ANALYSIS ---
