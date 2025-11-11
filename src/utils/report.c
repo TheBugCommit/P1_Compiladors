@@ -23,6 +23,13 @@ void print_value(ExprResult e) {
         case TYPE_BOOL:
             printf("%s", e.value.bool_val ? "true" : "false");
             break;
+        case TYPE_STRUCT:
+            if(e.value.struct_val && e.value.struct_val->name) {
+                printf("%s", e.value.struct_val->name);
+            } else {
+                printf("Unknown Struct");
+            }
+            break;
         case TYPE_VOID:
             break;
     }

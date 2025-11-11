@@ -50,7 +50,7 @@ RETURN          [\n]
 COMMENT         (\/\/|#)
 DIGIT           [0-9]
 EXPONENT        ([eE][+-]?{DIGIT}+)
-FLOAT           (({DIGIT}+\.{DIGIT}+({EXPONENT})?)|(\.{DIGIT}+({EXPONENT})?)|({DIGIT}+{EXPONENT}))
+FLOAT           (({DIGIT}+\.{DIGIT}+({EXPONENT})?)|(\.{DIGIT}+({EXPONENT})?)|({DIGIT}+{EXPONENT})|({DIGIT}+\.))
 INT             {DIGIT}+
 STRING          \"([^"\n\\]|\\.)*\"
 UNCLOSED_STRING \"[^\n\"]*(\n|$)
@@ -76,7 +76,7 @@ UNCLOSED_STRING \"[^\n\"]*(\n|$)
 }
 
 {COMMENT}[^\n]*     { log_production("Skipped comment until EOL"); }
-{COMMENT}[^\n]*\n   { log_production("Skipped full comment line"); }
+{COMMENT}[^\n]*\n   { log_production("Skipped full comment line"); return TK_NEWLINE; }
 
 "{" {
     BEGIN(IN_BLOCK);       

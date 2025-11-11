@@ -158,10 +158,7 @@ sentence:
 ;
 
 assignment_sentence:
-    TK_ID TK_ASSIGN expression {
-        report_assignation($1, $3);
-        handle_assigment_sentence($1, $3);
-    }
+    TK_ID TK_ASSIGN expression { handle_assigment_sentence($1, $3); }
     | struct_member_access TK_ASSIGN expression 
     {
         report_struct_member_assigment($1, $3); 
