@@ -10,20 +10,27 @@
 #include "../src/utils/log.h"
 #include "../src/utils/error.h"
 
-extern int yylineno;
 extern YYSTYPE yylval;
+extern YYLTYPE yylloc;
 
 int yycolumn = 0;
+int lineno = 0;
+int emitted_final_eof = 0;
+
 #define YY_USER_ACTION { \
-    \
     int i; \
+    yylloc.first_line = lineno + 1; \
+    yylloc.first_column = yycolumn - yyleng > 0 ? yycolumn - yyleng : yycolumn; \
     for (i = 0; i < yyleng; ++i) { \
         if (yytext[i] == '\n') { \
+            lineno++; \
             yycolumn = 0; \
         } else { \
             yycolumn++; \
         } \
     } \
+    yylloc.last_line = lineno; \
+    yylloc.last_column = yycolumn; \
 }
 
 char* unescape_string(char* s) {
@@ -35,7 +42,6 @@ char* unescape_string(char* s) {
 
 %}
 
-%option yylineno
 %option nounput
 %option noinput
 %option noyywrap
@@ -207,6 +213,15 @@ UNCLOSED_STRING \"[^\n\"]*(\n|$)
 
 {WHITESPACE}+      { }
 {RETURN}+          { return TK_NEWLINE; }
+
+<<EOF>>     { 
+    if (!emitted_final_eof) {
+        emitted_final_eof = 1;
+        return TK_EOF;
+    } else {
+        return 0;
+    }
+}
 
 . { 
     SourceLocation loc = current_location();

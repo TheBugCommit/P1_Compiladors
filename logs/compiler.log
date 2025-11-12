@@ -1,25 +1,117 @@
 --- START OF ANALYSIS ---
+[PROD] Skipped full comment line
 [PROD] Type: int
 [PROD] Declared struct identifier: 'x' (Type: INT)
-[PROD] Type: int
-[PROD] Declared struct identifier: 'v' (Type: INT)
+[PROD] Type: float
+[PROD] Declared struct identifier: 'y' (Type: FLOAT)
+[PROD] Type: string
+[PROD] Declared struct identifier: 'nom' (Type: STRING)
 [PROD] Declared struct: 'Punt' (Type: STRUCT)
+[PROD] Type: int
+[PROD] Declared struct identifier: 'x' (Type: INT)
+[PROD] Type: float
+[PROD] Declared struct identifier: 'y' (Type: FLOAT)
+[PROD] Type: string
+[PROD] Declared struct identifier: 'nom' (Type: STRING)
+[PROD] Declared struct: 'Punt2' (Type: STRUCT)
+[PROD] Type: int
+[PROD] Declared identifier: 'x' (Type: INT)
+[PROD] Type: string
+[PROD] Declared identifier: 'nom' (Type: STRING)
+[PROD] Skipped full comment line
+[PROD] Recovered from item list error, skipping item.
+[PROD] Recovered from struct field error, skipping first field.
+[PROD] Type: float
+[PROD] Declared struct identifier: 'y' (Type: FLOAT)
+[PROD] Declared struct: 'Cercle' (Type: STRUCT)
+[PROD] Type: float
+[PROD] Declared identifier: 'radi' (Type: FLOAT)
+[PROD] Struct member access: p3.radi
+[PROD] Literal: FLOAT (3.2)
+[PROD] Struct member access: p3.radi
+[PROD] Type: int
+[PROD] Skipped full comment line
+[PROD] Declared identifier: 'punt2' (Type: INT)
+[PROD] Type: int
+[PROD] Declared struct identifier: 'x' (Type: INT)
+[PROD] Type: float
+[PROD] Declared struct identifier: 'y' (Type: FLOAT)
+[PROD] Skipped full comment line
 [PROD] Struct member access: p1.x
-[PROD] Literal: INT (1)
-[PROD] Assignment: 'x' = 1 [Type: INT]
+[PROD] Literal: INT (10)
+[PROD] Assignment: 'x' = 10 [Type: INT]
 [PROD] Assignment to struct member 'p1.x' successful
-[PROD] Struct member access: p1.v
+[PROD] Struct member access: p1.y
+[PROD] Literal: FLOAT (3.14)
+[PROD] Assignment: 'y' = 3.14 [Type: FLOAT]
+[PROD] Assignment to struct member 'p1.y' successful
+[PROD] Struct member access: p1.nom
+[PROD] Literal: STRING (Punt A)
+[PROD] Assignment: 'nom' = Punt A [Type: STRING]
+[PROD] Assignment to struct member 'p1.nom' successful
+[PROD] Struct member access: p1.x
+[PROD] Literal: INT (5)
+[PROD] Skipped full comment line
+[PROD] Evaluating add
+[PROD] Assignment: 'x' = 15 [Type: INT]
+[PROD] Symbtab updated
+[PROD] Struct member access: p1.nom
+[PROD] Assignment: 'nom' = Punt A [Type: STRING]
+[PROD] Symbtab updated
+[PROD] Struct member access: p2.x
 [PROD] Struct member access: p1.x
 [PROD] Literal: INT (2)
-[PROD] Literal: INT (3)
+[PROD] Skipped full comment line
 [PROD] Evaluating mul
+[PROD] Assignment: 'x' = 20 [Type: INT]
+[PROD] Assignment to struct member 'p2.x' successful
+[PROD] Struct member access: p2.y
+[PROD] Struct member access: p1.y
+[PROD] Literal: FLOAT (2)
+[PROD] Evaluating div
+[PROD] Assignment: 'y' = 1.57 [Type: FLOAT]
+[PROD] Assignment to struct member 'p2.y' successful
+[PROD] Struct member access: p2.nom
+[PROD] Struct member access: p1.nom
+[PROD] Literal: STRING ( (copia))
 [PROD] Evaluating add
-[PROD] Assignment: 'v' = 7 [Type: INT]
-[PROD] Assignment to struct member 'p1.v' successful
+[PROD] Assignment: 'nom' = Punt A (copia) [Type: STRING]
+[PROD] Assignment to struct member 'p2.nom' successful
+[PROD] Skipped full comment line
 [PROD] Struct member access: p1.x
-[PROD] Recovered from sentence error
-[PROD] Struct member access: p1.v
-[PROD] Struct member access: p1.a
+[PROD] Struct member access: p2.x
+[PROD] Skipped full comment line
+[PROD] Evaluating add
+[PROD] Assignment: 'x' = 30 [Type: INT]
+[PROD] Symbtab updated
+[PROD] Struct member access: p1.x
+[PROD] Struct member access: p1.x
+[PROD] Struct member access: p2.x
+[PROD] Skipped full comment line
+[PROD] Evaluating add
+[PROD] Assignment: 'x' = 30 [Type: INT]
+[PROD] Assignment to struct member 'p1.x' successful
+[PROD] Skipped full comment line
 [PROD] Expression: Identifier 'p1'
 [PROD] Assignment: 'p5' = Punt [Type: STRUCT]
+[PROD] Struct member access: p5.x
+[PROD] Struct member access: p5.y
+[PROD] Struct member access: p5.nom
+[PROD] Struct member access: p1.x
+[PROD] Literal: INT (3)
+[PROD] Assignment: 'x' = 3 [Type: INT]
+[PROD] Assignment to struct member 'p1.x' successful
+[PROD] Struct member access: p1.x
+[PROD] Struct member access: p5.x
+[PROD] Skipped full comment line
+[PROD] Struct member access: p1.z
+[PROD] Literal: INT (100)
+[PROD] Skipped full comment line
+[PROD] Skipped full comment line
+[PROD] Expression: Identifier 'p1'
+[PROD] Skipped full comment line
+[PROD] Expression: Identifier 'p1'
+[PROD] Struct member access: p5.x
+[PROD] Literal: STRING (hola)
+[PROD] Skipped comment until EOL
 --- END OF ANALYSIS ---

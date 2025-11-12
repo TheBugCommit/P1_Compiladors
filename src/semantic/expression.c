@@ -7,7 +7,6 @@
 
 #include "../utils/error.h"
 #include "../utils/log.h"
-#include "common.h"
 #include "globals.h"
 #include "parser.h"
 

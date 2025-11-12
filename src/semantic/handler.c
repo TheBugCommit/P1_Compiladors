@@ -73,7 +73,7 @@ int assigment_sentence(char* token_id, sym_value_type* entry,
             log_production("Assignment: '%s' = %g [Type: %s]", token_id,
                            entry->value.float_val, TYPE_NAME[entry->type]);
             break;
-        case TYPE_VOID:
+        default:
             break;
     }
 
@@ -115,14 +115,14 @@ void handle_assigment_sentence(char* token_id, ExprResult expression) {
         log_production("Assignment: '%s' = %s [Type: %s]", token_id,
                        expression.value.struct_val->name,
                        TYPE_NAME[entry->type]);
-        report_assignation(token_id, expression);
+        report_assignation(current_location(), token_id, expression);
     } else if (assigment_sentence(token_id, entry, expression)) {
         res = sym_enter(token_id, entry);
         if (res == SYMTAB_DUPLICATE) {
             log_production("Symbtab updated");
         }
 
-        report_assignation(token_id, expression);
+        report_assignation(current_location(), token_id, expression);
     }
 
     free_expr_string(&expression);

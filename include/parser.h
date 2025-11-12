@@ -45,7 +45,7 @@
 extern int yydebug;
 #endif
 /* "%code requires" blocks.  */
-#line 22 "src/parser/parser.y"
+#line 20 "src/parser/parser.y"
 
   #include "data_types.h"
   #include "../src/semantic/string_list.h"
@@ -78,31 +78,32 @@ extern int yydebug;
     TK_NEWLINE = 272,              /* TK_NEWLINE  */
     TK_SEMICOLON = 273,            /* TK_SEMICOLON  */
     TK_DOT = 274,                  /* TK_DOT  */
-    TK_PLUS = 275,                 /* TK_PLUS  */
-    TK_MINUS = 276,                /* TK_MINUS  */
-    TK_MULT = 277,                 /* TK_MULT  */
-    TK_DIV = 278,                  /* TK_DIV  */
-    TK_MOD = 279,                  /* TK_MOD  */
-    TK_POW = 280,                  /* TK_POW  */
-    TK_GT = 281,                   /* TK_GT  */
-    TK_GE = 282,                   /* TK_GE  */
-    TK_LT = 283,                   /* TK_LT  */
-    TK_LE = 284,                   /* TK_LE  */
-    TK_EQ = 285,                   /* TK_EQ  */
-    TK_NE = 286,                   /* TK_NE  */
-    TK_NOT = 287,                  /* TK_NOT  */
-    TK_AND = 288,                  /* TK_AND  */
-    TK_OR = 289,                   /* TK_OR  */
-    TK_LPAREN = 290,               /* TK_LPAREN  */
-    TK_RPAREN = 291,               /* TK_RPAREN  */
-    TK_LBRACE = 292,               /* TK_LBRACE  */
-    TK_RBRACE = 293,               /* TK_RBRACE  */
-    TK_STRUCT = 294,               /* TK_STRUCT  */
-    TK_SIN = 295,                  /* TK_SIN  */
-    TK_COS = 296,                  /* TK_COS  */
-    TK_TAN = 297,                  /* TK_TAN  */
-    TK_LEN = 298,                  /* TK_LEN  */
-    TK_SUBSTR = 299                /* TK_SUBSTR  */
+    TK_EOF = 275,                  /* TK_EOF  */
+    TK_PLUS = 276,                 /* TK_PLUS  */
+    TK_MINUS = 277,                /* TK_MINUS  */
+    TK_MULT = 278,                 /* TK_MULT  */
+    TK_DIV = 279,                  /* TK_DIV  */
+    TK_MOD = 280,                  /* TK_MOD  */
+    TK_POW = 281,                  /* TK_POW  */
+    TK_GT = 282,                   /* TK_GT  */
+    TK_GE = 283,                   /* TK_GE  */
+    TK_LT = 284,                   /* TK_LT  */
+    TK_LE = 285,                   /* TK_LE  */
+    TK_EQ = 286,                   /* TK_EQ  */
+    TK_NE = 287,                   /* TK_NE  */
+    TK_NOT = 288,                  /* TK_NOT  */
+    TK_AND = 289,                  /* TK_AND  */
+    TK_OR = 290,                   /* TK_OR  */
+    TK_LPAREN = 291,               /* TK_LPAREN  */
+    TK_RPAREN = 292,               /* TK_RPAREN  */
+    TK_LBRACE = 293,               /* TK_LBRACE  */
+    TK_RBRACE = 294,               /* TK_RBRACE  */
+    TK_STRUCT = 295,               /* TK_STRUCT  */
+    TK_SIN = 296,                  /* TK_SIN  */
+    TK_COS = 297,                  /* TK_COS  */
+    TK_TAN = 298,                  /* TK_TAN  */
+    TK_LEN = 299,                  /* TK_LEN  */
+    TK_SUBSTR = 300                /* TK_SUBSTR  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -111,7 +112,7 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 27 "src/parser/parser.y"
+#line 25 "src/parser/parser.y"
 
     char *text;
     DATA_TYPE data_type;
@@ -125,7 +126,7 @@ union YYSTYPE
     StructFieldListNode* struct_field_list;
     StructAccessData struct_access_data;
 
-#line 129 "build/parser.tab.h"
+#line 130 "build/parser.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;
@@ -133,9 +134,23 @@ typedef union YYSTYPE YYSTYPE;
 # define YYSTYPE_IS_DECLARED 1
 #endif
 
+/* Location type.  */
+#if ! defined YYLTYPE && ! defined YYLTYPE_IS_DECLARED
+typedef struct YYLTYPE YYLTYPE;
+struct YYLTYPE
+{
+  int first_line;
+  int first_column;
+  int last_line;
+  int last_column;
+};
+# define YYLTYPE_IS_DECLARED 1
+# define YYLTYPE_IS_TRIVIAL 1
+#endif
+
 
 extern YYSTYPE yylval;
-
+extern YYLTYPE yylloc;
 
 int yyparse (void);
 

@@ -7,6 +7,7 @@
 #include "../symtab/symtab.h"
 #include "../utils/error.h"
 #include "../utils/log.h"
+#include "../utils/report.h"
 #include "./handler.h"
 #include "globals.h"
 
@@ -199,8 +200,7 @@ int handle_struct_declaration(char* struct_id,
 
     int result = sym_add(inst->name, new_entry);
     if (result != SYMTAB_OK) {
-        report_error(ERROR_LEVEL_FATAL, COMPILER_ERROR_MEMORY,
-                     current_location(), "SYMTAB ERROR",
+        report_error(ERROR_LEVEL_FATAL, current_location(), "SYMTAB ERROR",
                      "Error adding struct '%s' to symtab", struct_id);
         return 0;
     }
@@ -238,6 +238,8 @@ void handle_struct_member_assigment(StructAccessData struct_access_data,
                 return;
             }
 
+            report_struct_member_assigment(current_location(),
+                                           struct_access_data, e);
             log_production("Assignment to struct member '%s.%s' successful",
                            struct_access_data.instance_id,
                            struct_access_data.field_id);
@@ -292,8 +294,9 @@ ExprResult handle_struct_member_access_value(
 
             e.type = fields->field.data.type;
             e.value = fields->field.data.value;
-            if(e.type == TYPE_STRING) {
-                e.value.string_val = strdup(fields->field.data.value.string_val);
+            if (e.type == TYPE_STRING) {
+                e.value.string_val =
+                    strdup(fields->field.data.value.string_val);
             }
         } else {
             fields = fields->next;

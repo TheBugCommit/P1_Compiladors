@@ -24,7 +24,7 @@ void print_value(ExprResult e) {
             printf("%s", e.value.bool_val ? "true" : "false");
             break;
         case TYPE_STRUCT:
-            if(e.value.struct_val && e.value.struct_val->name) {
+            if (e.value.struct_val && e.value.struct_val->name) {
                 printf("%s", e.value.struct_val->name);
             } else {
                 printf("Unknown Struct");
@@ -35,27 +35,32 @@ void print_value(ExprResult e) {
     }
 }
 
-void report_expression(ExprResult e) {
+void report_expression(SourceLocation loc, ExprResult e) {
     if (e.type == TYPE_VOID) return;
 
-    printf("EXPRESSION => Type: %s, ", TYPE_NAME[e.type]);
+    printf("[%d] EXPRESSION => Type: %s, ", loc.line, TYPE_NAME[e.type]);
     print_value(e);
     printf("\n");
 }
 
-void report_assignation(const char* token_id, ExprResult e) {
+void report_assignation(SourceLocation loc, const char* token_id,
+                        ExprResult e) {
     if (e.type == TYPE_VOID) return;
 
-    printf("ASSIGNATION => Name: %s, Type: %s, ", token_id, TYPE_NAME[e.type]);
+    printf("[%d] ASSIGNATION => Name: %s, Type: %s, ", loc.line, token_id,
+           TYPE_NAME[e.type]);
     print_value(e);
     printf("\n");
 }
 
-void report_struct_member_assigment(StructAccessData struct_acces_data,
+void report_struct_member_assigment(SourceLocation loc,
+                                    StructAccessData struct_acces_data,
                                     ExprResult e) {
     if (e.type == TYPE_VOID) return;
 
-    printf("ASSIGNATION => Name: %s.%s, Type: %s, ", struct_acces_data.instance_id, struct_acces_data.field_id, TYPE_NAME[e.type]);
+    printf("[%d] ASSIGNATION => Name: %s.%s, Type: %s, ", loc.line,
+           struct_acces_data.instance_id, struct_acces_data.field_id,
+           TYPE_NAME[e.type]);
     print_value(e);
     printf("\n");
 }

@@ -51,10 +51,4 @@ typedef struct {
     char* field_id;
 } StructAccessData;
 
-/**
- * Symtab -> k: "struct_name", v: StructFieldListNode
- * if ne instance s1, s2... create StructInstance, and duplicate
- * symtab StructFieldListNode
- */
-
 #endif

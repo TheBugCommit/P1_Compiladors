@@ -23,6 +23,10 @@ struct Cercle {
     } centre
     float radi
 } p3 
+
+p3.radi := 3.2
+p3.radi
+
 int punt2 //Error punt2 ja declarat
 struct Punt2 {
     int x;

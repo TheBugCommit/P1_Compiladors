@@ -5,9 +5,6 @@
 
 static FILE *log_file = NULL;
 
-extern int yylineno; 
-extern int yycolumn; 
-
 void log_init(const char* filename) {
 
     if (filename) {
