@@ -225,7 +225,7 @@ arith_term:
   | arith_factor                    { $$ = $1; }
 ;
 
-/* Nivel 7: Potencia (**) (Asociativa por la derecha) */
+/* Nivel 7: Potencia (**) */
 arith_factor:
     primary TK_POW arith_factor { $$ = eval_pow($1, $3); free_expr_string(&$1); free_expr_string(&$3); }
     | primary { $$ = $1; }

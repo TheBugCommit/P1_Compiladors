@@ -9,10 +9,7 @@ struct Punt1 {
     int v;
         } p2
 
-struct Punt2 { 
-    int x, a, d, a; 
-    int v;
-        } p3
+struct Punt2 { int x, a, d; int v; } p3
 
 p1.x := 1
 p1.v := p1.x + 2 * 3

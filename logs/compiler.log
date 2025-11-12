@@ -1,89 +1,25 @@
 --- START OF ANALYSIS ---
-[PROD] Skipped full comment line
-[PROD] Skipped full comment line
-[PROD] Skipped full comment line
-[PROD] Multiline comment start on row: 4 col: 2
-[PROD] Multicomment skipping characters
-[PROD] Multiline comment closed on row: 5 col: 27
 [PROD] Type: int
-[PROD] Skipped full comment line
-[PROD] Declared identifier: 'error4' (Type: INT)
-[PROD] Declared identifier: 'error1' (Type: INT)
-[PROD] Declared identifier: 'a' (Type: INT)
-[PROD] Type: float
-[PROD] Multiline comment start on row: 7 col: 10
-[PROD] Multicomment skipping characters
-[PROD] Multiline comment closed on row: 7 col: 38
-[PROD] Declared identifier: 'b' (Type: FLOAT)
-[PROD] Type: float
-[PROD] Declared identifier: 'c' (Type: FLOAT)
-[PROD] Type: float
-[PROD] Declared identifier: 'f3' (Type: FLOAT)
-[PROD] Declared identifier: 'f2' (Type: FLOAT)
-[PROD] Declared identifier: 'f1' (Type: FLOAT)
-[PROD] Type: string
-[PROD] Declared identifier: 'error3' (Type: STRING)
-[PROD] Declared identifier: 'error2' (Type: STRING)
-[PROD] Declared identifier: 's1' (Type: STRING)
+[PROD] Declared struct identifier: 'x' (Type: INT)
 [PROD] Type: int
-[PROD] Declared identifier: 'i2' (Type: INT)
-[PROD] Declared identifier: 'i1' (Type: INT)
-[PROD] Type: bool
-[PROD] Declared identifier: 'b2' (Type: BOOLEAN)
-[PROD] Declared identifier: 'b1' (Type: BOOLEAN)
-[PROD] Skipped full comment line
-[PROD] Literal: INT (123)
-[PROD] Assignment: 'i1' = 123 [Type: INT]
-[PROD] Symbtab updated
-[PROD] Literal: INT (45)
-[PROD] Assignment: 'i2' = 45 [Type: INT]
-[PROD] Symbtab updated
-[PROD] Literal: INT (0)
-[PROD] Assignment: 'i1' = 0 [Type: INT]
-[PROD] Symbtab updated
-[PROD] Literal: FLOAT (3.1416)
-[PROD] Assignment: 'f1' = 3.1416 [Type: FLOAT]
-[PROD] Symbtab updated
-[PROD] Literal: FLOAT (5e-05)
-[PROD] Assignment: 'f2' = 5e-05 [Type: FLOAT]
-[PROD] Symbtab updated
-[PROD] Literal: FLOAT (1234.5)
-[PROD] Assignment: 'f3' = 1234.5 [Type: FLOAT]
-[PROD] Symbtab updated
-[PROD] Literal: FLOAT (1)
-[PROD] Skipped full comment line
-[PROD] Assignment: 'f1' = 1 [Type: FLOAT]
-[PROD] Symbtab updated
-[PROD] Skipped full comment line
-[PROD] Literal: STRING (Hola món)
-[PROD] Assignment: 's1' = Hola món [Type: STRING]
-[PROD] Symbtab updated
-[PROD] Literal: STRING (Cadena amb \" cometes escapades (si s'implementa))
-[PROD] Assignment: 's1' = Cadena amb \" cometes escapades (si s'implementa) [Type: STRING]
-[PROD] Symbtab updated
-[PROD] Literal: STRING ()
-[PROD] Skipped full comment line
-[PROD] Assignment: 's1' =  [Type: STRING]
-[PROD] Symbtab updated
-[PROD] Skipped full comment line
-[PROD] Literal: BOOLEAN (true)
-[PROD] Assignment: 'b1' = 1 [Type: BOOLEAN]
-[PROD] Symbtab updated
-[PROD] Literal: BOOLEAN (false)
-[PROD] Assignment: 'b2' = 0 [Type: BOOLEAN]
-[PROD] Symbtab updated
-[PROD] Skipped full comment line
-[PROD] Literal: FLOAT (1.2)
-[PROD] Skipped full comment line
+[PROD] Declared struct identifier: 'v' (Type: INT)
+[PROD] Declared struct: 'Punt' (Type: STRUCT)
+[PROD] Struct member access: p1.x
+[PROD] Literal: INT (1)
+[PROD] Assignment: 'x' = 1 [Type: INT]
+[PROD] Assignment to struct member 'p1.x' successful
+[PROD] Struct member access: p1.v
+[PROD] Struct member access: p1.x
+[PROD] Literal: INT (2)
+[PROD] Literal: INT (3)
+[PROD] Evaluating mul
+[PROD] Evaluating add
+[PROD] Assignment: 'v' = 7 [Type: INT]
+[PROD] Assignment to struct member 'p1.v' successful
+[PROD] Struct member access: p1.x
 [PROD] Recovered from sentence error
-[PROD] Skipped full comment line
-[PROD] Recovered from sentence error
-[PROD] Literal: STRING (Cadena amb salt de línia \n)
-[PROD] Skipped full comment line
-[PROD] Assignment: 'error3' = Cadena amb salt de línia \n [Type: STRING]
-[PROD] Symbtab updated
-[PROD] Literal: FLOAT (5e-06)
-[PROD] Skipped full comment line
-[PROD] Multiline comment start on row: 39 col: 2
-[PROD] Multicomment skipping characters
+[PROD] Struct member access: p1.v
+[PROD] Struct member access: p1.a
+[PROD] Expression: Identifier 'p1'
+[PROD] Assignment: 'p5' = Punt [Type: STRUCT]
 --- END OF ANALYSIS ---

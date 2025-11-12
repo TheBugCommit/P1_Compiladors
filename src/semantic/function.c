@@ -91,7 +91,7 @@ ExprResult eval_substr(ExprResult input, ExprResult start, ExprResult len) {
     long long int pos = start.value.int_val;
     long long int count = len.value.int_val;
 
-    if (pos < 0 || count < 0 || pos >= strlen(input.value.string_val)) {
+    if (pos < 0 || count < 0 || pos >= strlen(input.value.string_val) || pos+count > strlen(input.value.string_val)) {
         REPORT_SEMANTIC_ERROR(current_location(), "Error: SUBSTR() out of range")
         res.type = TYPE_VOID;
         return res;
