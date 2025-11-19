@@ -36,10 +36,7 @@ void handle_simple_declaration(DATA_TYPE declared_type, StringListNode* list) {
 
 int assigment_sentence(char* token_id, sym_value_type* entry,
                        ExprResult expression) {
-    if (entry->type == TYPE_FLOAT && expression.type == TYPE_INT) {
-        expression.type = TYPE_FLOAT;
-        expression.value.float_val = (double)expression.value.int_val;
-    } else if (entry->type != expression.type) {
+    if (entry->type != expression.type) {
         REPORT_SEMANTIC_ERROR(
             current_location(),
             "Type mismatch in assignment to '%s'. Expected %s, got %s",

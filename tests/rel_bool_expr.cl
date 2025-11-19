@@ -24,10 +24,8 @@ b1 := true or false and not true
 b2 := (true or false) and not true
 
 // Prova combinada
-// 10 > 5 and 5 < 10 = true and true = true
-b1 := i > j and j < i
-// 10 < 5 or 10 = 10.0 and true = false or (true and true) = true
-b2 := i < j or i = x and b1
+b1 := i > j and j < i //true
+b2 := i < j or i = x and b1 //true
 
 // ----- Proves d'error -----
 

@@ -5,7 +5,6 @@
 #include "globals.h"
 
 void print_value(ExprResult e) {
-    printf("Value: ");
     switch (e.type) {
         case TYPE_INT:
             printf("%lld", e.value.int_val);
@@ -38,7 +37,7 @@ void print_value(ExprResult e) {
 void report_expression(SourceLocation loc, ExprResult e) {
     if (e.type == TYPE_VOID) return;
 
-    printf("[%d] EXPRESSION => Type: %s, ", loc.line, TYPE_NAME[e.type]);
+    printf("[%d] ", loc.line);
     print_value(e);
     printf("\n");
 }
@@ -47,8 +46,7 @@ void report_assignation(SourceLocation loc, const char* token_id,
                         ExprResult e) {
     if (e.type == TYPE_VOID) return;
 
-    printf("[%d] ASSIGNATION => Name: %s, Type: %s, ", loc.line, token_id,
-           TYPE_NAME[e.type]);
+    printf("[%d] %s := ", loc.line, token_id);
     print_value(e);
     printf("\n");
 }
@@ -58,9 +56,8 @@ void report_struct_member_assigment(SourceLocation loc,
                                     ExprResult e) {
     if (e.type == TYPE_VOID) return;
 
-    printf("[%d] ASSIGNATION => Name: %s.%s, Type: %s, ", loc.line,
-           struct_acces_data.instance_id, struct_acces_data.field_id,
-           TYPE_NAME[e.type]);
+    printf("[%d] %s.%s := ", loc.line,
+           struct_acces_data.instance_id, struct_acces_data.field_id);
     print_value(e);
     printf("\n");
 }

@@ -1,0 +1,141 @@
+--- START OF ANALYSIS ---
+[PROD] Type: int
+[PROD] Declared identifier: 'i' (Type: INT)
+[PROD] Type: float
+[PROD] Declared identifier: 'f' (Type: FLOAT)
+[PROD] Type: string
+[PROD] Declared identifier: 's' (Type: STRING)
+[PROD] Type: bool
+[PROD] Declared identifier: 'b' (Type: BOOLEAN)
+[PROD] Literal: INT (10)
+[PROD] Assignment: 'i' = 10 [Type: INT]
+[PROD] Symbtab updated
+[PROD] Literal: INT (1)
+[PROD] Literal: FLOAT (5.5)
+[PROD] Assignment: 'f' = 5.5 [Type: FLOAT]
+[PROD] Symbtab updated
+[PROD] Literal: STRING (Resultat: )
+[PROD] Assignment: 's' = Resultat:  [Type: STRING]
+[PROD] Symbtab updated
+[PROD] Literal: BOOLEAN (true)
+[PROD] Assignment: 'b' = 1 [Type: BOOLEAN]
+[PROD] Symbtab updated
+[PROD] Skipped full comment line
+[PROD] Skipped full comment line
+[PROD] Expression: Identifier 'i'
+[PROD] Expression: Identifier 'f'
+[PROD] Evaluating add
+[PROD] Assignment: 'f' = 15.5 [Type: FLOAT]
+[PROD] Symbtab updated
+[PROD] Skipped full comment line
+[PROD] Expression: Identifier 'f'
+[PROD] Expression: Identifier 'i'
+[PROD] Evaluating mul
+[PROD] Assignment: 'f' = 155 [Type: FLOAT]
+[PROD] Symbtab updated
+[PROD] Skipped full comment line
+[PROD] Literal: INT (10)
+[PROD] Literal: INT (4)
+[PROD] Evaluating div
+[PROD] Assignment: 'i' = 2 [Type: INT]
+[PROD] Symbtab updated
+[PROD] Skipped full comment line
+[PROD] Literal: FLOAT (10)
+[PROD] Literal: INT (4)
+[PROD] Evaluating div
+[PROD] Assignment: 'f' = 2.5 [Type: FLOAT]
+[PROD] Symbtab updated
+[PROD] Skipped full comment line
+[PROD] Literal: INT (10)
+[PROD] Literal: FLOAT (4)
+[PROD] Evaluating div
+[PROD] Assignment: 'f' = 2.5 [Type: FLOAT]
+[PROD] Symbtab updated
+[PROD] Skipped full comment line
+[PROD] Skipped full comment line
+[PROD] Literal: STRING (Hola)
+[PROD] Literal: STRING ( )
+[PROD] Evaluating add
+[PROD] Literal: STRING (Mon)
+[PROD] Evaluating add
+[PROD] Skipped full comment line
+[PROD] Expression: Identifier 's'
+[PROD] Skipped full comment line
+[PROD] Expression: Identifier 'i'
+[PROD] Evaluating add
+[PROD] Assignment: 's' = Resultat: 2 [Type: STRING]
+[PROD] Symbtab updated
+[PROD] Skipped full comment line
+[PROD] Expression: Identifier 'i'
+[PROD] Skipped full comment line
+[PROD] Expression: Identifier 's'
+[PROD] Evaluating add
+[PROD] Assignment: 's' = 2Resultat: 2 [Type: STRING]
+[PROD] Symbtab updated
+[PROD] Skipped full comment line
+[PROD] Expression: Identifier 's'
+[PROD] Skipped full comment line
+[PROD] Expression: Identifier 'f'
+[PROD] Evaluating add
+[PROD] Assignment: 's' = 2Resultat: 22.5 [Type: STRING]
+[PROD] Symbtab updated
+[PROD] Expression: Identifier 's'
+[PROD] Skipped full comment line
+[PROD] Expression: Identifier 'b'
+[PROD] Evaluating add
+[PROD] Skipped full comment line
+[PROD] Literal: STRING (i=)
+[PROD] Expression: Identifier 'i'
+[PROD] Evaluating add
+[PROD] Literal: STRING (, f=)
+[PROD] Evaluating add
+[PROD] Expression: Identifier 'f'
+[PROD] Evaluating add
+[PROD] Assignment: 's' = i=2, f=2.5 [Type: STRING]
+[PROD] Symbtab updated
+[PROD] Skipped full comment line
+[PROD] Literal: INT (10)
+[PROD] Assignment: 'i' = 10 [Type: INT]
+[PROD] Symbtab updated
+[PROD] Literal: FLOAT (5.5)
+[PROD] Assignment: 'f' = 5.5 [Type: FLOAT]
+[PROD] Symbtab updated
+[PROD] Literal: STRING (hola)
+[PROD] Assignment: 's' = hola [Type: STRING]
+[PROD] Symbtab updated
+[PROD] Literal: BOOLEAN (true)
+[PROD] Assignment: 'b' = 1 [Type: BOOLEAN]
+[PROD] Symbtab updated
+[PROD] Expression: Identifier 's'
+[PROD] Literal: STRING (a)
+[PROD] Skipped full comment line
+[PROD] Evaluating sub
+[PROD] Expression: Identifier 's'
+[PROD] Skipped full comment line
+[PROD] Expression: Identifier 'i'
+[PROD] Evaluating mul
+[PROD] Expression: Identifier 's'
+[PROD] Skipped full comment line
+[PROD] Expression: Identifier 'i'
+[PROD] Evaluating div
+[PROD] Expression: Identifier 's'
+[PROD] Skipped full comment line
+[PROD] Expression: Identifier 'i'
+[PROD] Evaluating mod
+[PROD] Expression: Identifier 's'
+[PROD] Skipped full comment line
+[PROD] Expression: Identifier 'i'
+[PROD] Evaluating pow
+[PROD] Expression: Identifier 'i'
+[PROD] Skipped full comment line
+[PROD] Expression: Identifier 'b'
+[PROD] Evaluating add
+[PROD] Expression: Identifier 's'
+[PROD] Literal: STRING (a)
+[PROD] Skipped full comment line
+[PROD] Evaluating add
+[PROD] Skipped full comment line
+[PROD] Expression: Identifier 'f'
+[PROD] Skipped comment until EOL
+[PROD] Expression: Identifier 's'
+--- END OF ANALYSIS ---

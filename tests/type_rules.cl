@@ -4,6 +4,7 @@ string s
 bool b
 
 i := 10
+f := 1
 f := 5.5
 s := "Resultat: "
 b := true
